@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin — Evidências Modas</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0d0b;--bg2:#131210;--bg3:#1a1916;
+  --ink:#f3ede1;--dim:#a89e8b;--line:rgba(191,155,48,.2);
+  --gold:#bf9b30;--gs:#d9be6c;--green:#25D366;--red:#e05252;--blue:#4a9eff;
+  --r:4px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:'Inter',sans-serif}
+input,select,textarea{font-family:'Inter',sans-serif;background:var(--bg3);border:1px solid var(--line);color:var(--ink);padding:9px 13px;border-radius:var(--r);font-size:13px;outline:none;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+
+/* LAYOUT */
+.shell{display:flex;flex:1;min-height:100vh}
+.sidebar{width:220px;background:var(--bg2);border-right:1px solid var(--line);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;overflow:auto}
+.main{flex:1;overflow:auto;padding:32px 36px 60px;min-width:0}
+
+/* SIDEBAR */
+.logo{padding:24px 20px 20px;border-bottom:1px solid var(--line)}
+.logo h1{font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:.12em;font-weight:500}
+.logo span{color:var(--gold)}
+.logo small{display:block;font-size:10px;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;margin-top:4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:12px 20px;color:var(--dim);font-size:12.5px;letter-spacing:.1em;border-left:3px solid transparent;transition:all .2s;cursor:pointer}
+.nav-item:hover{color:var(--ink);background:rgba(255,255,255,.03)}
+.nav-item.active{color:var(--gs);border-left-color:var(--gold);background:rgba(191,155,48,.06)}
+.nav-item svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
+.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid var(--line)}
+.sidebar-footer a{font-size:11px;color:var(--dim);letter-spacing:.15em;display:flex;align-items:center;gap:8px;transition:color .2s}
+.sidebar-footer a:hover{color:var(--gs)}
+.sidebar-footer svg{width:14px;height:14px;fill:currentColor}
+
+/* PAGES */
+.page{display:none}.page.active{display:block}
+
+/* HEADER da página */
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;gap:16px;flex-wrap:wrap}
+.ph h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400}
+.ph h2 em{font-style:italic;color:var(--gs)}
+.tag{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);background:var(--bg3);border:1px solid var(--line);padding:5px 12px;border-radius:var(--r)}
+
+/* CARDS RESUMO */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--bg2);border:1px solid var(--line);padding:20px 22px;border-radius:var(--r)}
+.kpi .label{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.kpi .val{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;line-height:1;color:var(--gs)}
+.kpi .sub{font-size:11px;color:var(--dim);margin-top:6px}
+
+/* TABELA */
+.table-wrap{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+thead tr{border-bottom:1px solid var(--line)}
+th{text-align:left;padding:13px 16px;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);font-weight:500}
+td{padding:12px 16px;border-bottom:1px solid rgba(191,155,48,.08);font-size:13px;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:rgba(255,255,255,.02)}
+
+/* BADGES */
+.badge{display:inline-block;font-size:10px;letter-spacing:.2em;padding:3px 9px;border-radius:2px;text-transform:uppercase}
+.badge.ativo{background:rgba(37,211,102,.12);color:#25d366;border:1px solid rgba(37,211,102,.25)}
+.badge.inativo{background:rgba(224,82,82,.12);color:var(--red);border:1px solid rgba(224,82,82,.25)}
+.badge.fem{background:rgba(217,190,108,.1);color:var(--gs);border:1px solid var(--line)}
+.badge.masc{background:rgba(74,158,255,.1);color:var(--blue);border:1px solid rgba(74,158,255,.2)}
+.badge.novos{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line)}
+
+/* BOTÕES */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;border:none;border-radius:var(--r);transition:all .2s;font-weight:500}
+.btn-gold{background:var(--gold);color:#0e0d0b}.btn-gold:hover{background:var(--gs)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--dim)}.btn-ghost:hover{color:var(--ink);border-color:var(--dim)}
+.btn-red{background:transparent;border:1px solid rgba(224,82,82,.3);color:var(--red)}.btn-red:hover{background:rgba(224,82,82,.12)}
+.btn-sm{padding:6px 12px;font-size:10px}
+.btn svg{width:13px;height:13px;fill:currentColor;flex-shrink:0}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
+.field textarea{resize:vertical;min-height:80px}
+
+/* MODAL EDIT */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);width:min(92vw,560px);max-height:90vh;overflow-y:auto;padding:28px 28px 24px;position:relative;transform:scale(.96);transition:transform .3s}
+.overlay.open .modal{transform:scale(1)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.modal-head h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500}
+.close-btn{background:none;border:none;color:var(--dim);font-size:22px;line-height:1;padding:4px;transition:color .2s}.close-btn:hover{color:var(--ink)}
+
+/* IMGS thumb */
+.thumb{width:48px;height:56px;object-fit:cover;border:1px solid var(--line);border-radius:2px;background:var(--bg3)}
+
+/* RANKING */
+.rank-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(191,155,48,.07)}
+.rank-row:last-child{border-bottom:none}
+.rank-bar-wrap{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.rank-bar{height:100%;background:var(--gold);border-radius:3px;transition:width .6s ease}
+.rank-num{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gs);min-width:40px;text-align:right}
+
+/* TOAST */
+#toast{position:fixed;bottom:28px;right:28px;background:var(--bg2);border:1px solid var(--gold);color:var(--gs);font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:12px 22px;z-index:999;transition:transform .35s,opacity .35s;transform:translateY(60px);opacity:0;pointer-events:none;border-radius:var(--r)}
+#toast.show{transform:translateY(0);opacity:1}
+
+/* SEARCH */
+.search-bar{position:relative;max-width:320px}
+.search-bar input{padding-left:36px}
+.search-bar svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;fill:var(--dim);pointer-events:none}
+
+/* LOADING */
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-row td{text-align:center;padding:32px;color:var(--dim)}
+
+/* EMPTY */
+.empty{text-align:center;padding:60px 20px;color:var(--dim)}
+.empty svg{width:40px;height:40px;fill:var(--line);margin:0 auto 14px}
+
+@media(max-width:720px){
+  .sidebar{display:none}
+  .main{padding:20px 16px 50px}
+  .cards{grid-template-columns:1fr 1fr}
+}
+
+/* ─── TELA DE LOGIN ─── */
+#login-screen{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+}
+#login-screen.hidden{display:none}
+.login-box{
+  width:min(92vw,380px);
+  background:var(--bg2);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  padding:40px 36px 36px;
+  display:flex;flex-direction:column;gap:0;
+  animation:loginIn .45s cubic-bezier(.22,.97,.52,1.07);
+}
+@keyframes loginIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.login-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:500;letter-spacing:.1em;
+  color:var(--ink);margin-bottom:4px;
+}
+.login-logo span{color:var(--gold)}
+.login-sub{
+  font-size:10px;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:32px;
+}
+.login-field{
+  display:flex;flex-direction:column;gap:6px;margin-bottom:14px;
+}
+.login-field label{
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);
+}
+.login-field input{
+  background:var(--bg3);border:1px solid var(--line);color:var(--ink);
+  padding:11px 14px;border-radius:var(--r);font-size:13px;outline:none;
+  transition:border-color .2s;
+}
+.login-field input:focus{border-color:var(--gold)}
+.login-btn{
+  width:100%;margin-top:8px;
+  background:var(--gold);color:#0e0d0b;
+  border:none;border-radius:var(--r);
+  padding:12px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+  font-weight:600;cursor:pointer;transition:background .2s;
+}
+.login-btn:hover{background:var(--gs)}
+.login-btn:disabled{opacity:.5;cursor:not-allowed}
+.login-err{
+  font-size:11px;letter-spacing:.1em;color:var(--red);
+  margin-top:10px;min-height:18px;text-align:center;
+}
+.login-attempts{
+  font-size:10px;letter-spacing:.2em;color:var(--dim);
+  text-align:center;margin-top:8px;min-height:16px;
+}
+.login-lock{
+  text-align:center;padding:12px 0;
+  font-size:11px;letter-spacing:.15em;color:var(--red);
+}
+
+</style>
+</head>
+<body>
+
+<!-- ─── TELA DE LOGIN ADMIN ─── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Evidências <span>Modas</span></div>
+    <div class="login-sub">Painel Administrativo · Acesso Restrito</div>
+    <div class="login-field">
+      <label for="adm-user">Usuário</label>
+      <input type="text" id="adm-user" autocomplete="username" placeholder="e-mail do administrador" />
+    </div>
+    <div class="login-field">
+      <label for="adm-pass">Senha</label>
+      <input type="password" id="adm-pass" autocomplete="current-password" placeholder="••••••••••••" />
+    </div>
+    <button class="login-btn" id="adm-login-btn" onclick="admFazerLogin()">Entrar</button>
+    <div class="login-err" id="adm-err"></div>
+    <div class="login-attempts" id="adm-attempts"></div>
+  </div>
+</div>
+
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h1>Evidências <span>·</span></h1>
+      <small>Painel Admin</small>
+    </div>
+
+    <nav style="padding:12px 0">
+      <div class="nav-item active" onclick="goTo('dashboard')">
+        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="goTo('produtos')">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        Produtos
+      </div>
+      <div class="nav-item" onclick="goTo('contatos')">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+        Contatos
+      </div>
+      <div class="nav-item" onclick="goTo('stats')">
+        <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+        Estatísticas
+      </div>
+    </nav>
+
+    <div class="sidebar-footer" id="sidebar-footer">
+      <a href="/" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+        Ver catálogo
+      </a>
+      <a href="#" onclick="admLogout();return false;" style="margin-top:6px;color:var(--red)">
+        <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+        Sair do painel
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page active">
+      <div class="ph">
+        <h2>Olá, <em>Vendedora</em> 👋</h2>
+        <span class="tag" id="dash-date">—</span>
+      </div>
+
+      <div class="cards" id="kpi-cards">
+        <div class="kpi"><div class="label">Produtos ativos</div><div class="val" id="kpi-produtos">—</div><div class="sub">no catálogo</div></div>
+        <div class="kpi"><div class="label">Contatos recebidos</div><div class="val" id="kpi-contatos">—</div><div class="sub">total</div></div>
+        <div class="kpi"><div class="label">Visualizações</div><div class="val" id="kpi-views">—</div><div class="sub">total de acessos</div></div>
+        <div class="kpi"><div class="label">Contatos hoje</div><div class="val" id="kpi-hoje">—</div><div class="sub">novos pedidos</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex-wrap:wrap">
+        <!-- Mais vistos -->
+        <div class="table-wrap" style="padding:20px 22px">
+          <div style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:16px">Peças mais vistas</div>
+          <div id="rank-lista"><div class="spinner" style="margin:0 auto;display:block"></div></div>
+        </div>
+
+        <!-- Últimos contatos -->
+        <div class="table-wrap" style="padding:20px 22px">
+          <div style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:16px">Últimos contatos</div>
+          <div id="ultimos-contatos"><div class="spinner" style="margin:0 auto;display:block"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUTOS -->
+    <div id="page-produtos" class="page">
+      <div class="ph">
+        <h2>Gestão de <em>Produtos</em></h2>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <div class="search-bar">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="search-produto" placeholder="Buscar por nome ou SKU…" oninput="filtrarProdutos()">
+          </div>
+          <select id="filtro-cat" onchange="filtrarProdutos()" style="width:auto;padding:9px 14px">
+            <option value="">Todas categorias</option>
+            <option value="feminino">Feminino</option>
+            <option value="novos">Novos Modelos</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Produto</th>
+              <th>SKU</th>
+              <th>Categoria</th>
+              <th>Tamanhos</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-produtos">
+            <tr class="loading-row"><td colspan="7"><div class="spinner" style="margin:0 auto;display:block"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CONTATOS -->
+    <div id="page-contatos" class="page">
+      <div class="ph">
+        <h2>Contatos <em>Recebidos</em></h2>
+        <button class="btn btn-ghost btn-sm" onclick="carregarContatos()">
+          <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+          Atualizar
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Cliente</th>
+              <th>Produto</th>
+              <th>SKU</th>
+              <th>Mensagem</th>
+              <th>Data</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tabela-contatos">
+            <tr class="loading-row"><td colspan="7"><div class="spinner" style="margin:0 auto;display:block"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div id="page-stats" class="page">
+      <div class="ph"><h2>Estatísticas <em>de Acesso</em></h2></div>
+
+      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:20px">
+        <div style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:20px">Ranking completo de visualizações</div>
+        <div id="rank-full"><div class="spinner" style="margin:0 auto;display:block"></div></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL EDITAR PRODUTO -->
+<div class="overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-title">Editar Produto</h3>
+      <button class="close-btn" onclick="fecharModal()">&#x2715;</button>
+    </div>
+    <div class="form-grid">
+      <div class="field" style="grid-column:1/-1">
+        <label>Nome</label>
+        <input type="text" id="edit-nome">
+      </div>
+      <div class="field" style="grid-column:1/-1">
+        <label>Descrição</label>
+        <textarea id="edit-desc" rows="3"></textarea>
+      </div>
+      <div class="field">
+        <label>Tamanhos (separados por vírgula)</label>
+        <input type="text" id="edit-tam" placeholder="P, M, G ou 38, 40, 42">
+      </div>
+      <div class="field">
+        <label>Preço / Condição</label>
+        <input type="text" id="edit-preco" placeholder="Consulte valores">
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="edit-ativo">
+          <option value="1">✅ Ativo</option>
+          <option value="0">❌ Inativo</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Destaque</label>
+        <select id="edit-destaque">
+          <option value="0">Não</option>
+          <option value="1">⭐ Destaque</option>
+        </select>
+      </div>
+    </div>
+    <input type="hidden" id="edit-sku">
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)">
+      <button class="btn btn-ghost" onclick="fecharModal()">Cancelar</button>
+      <button class="btn btn-gold" onclick="salvarProduto()">
+        <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+        Salvar
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = "";  // mesmo host
+
+/* ─── Navegação ─── */
+function goTo(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+  document.getElementById("page-" + page).classList.add("active");
+  document.querySelectorAll(".nav-item").forEach(n => {
+    if (n.textContent.toLowerCase().includes(page.slice(0,4).toLowerCase())) n.classList.add("active");
+  });
+
+  if (page === "dashboard") carregarDashboard();
+  if (page === "produtos")  carregarProdutos();
+  if (page === "contatos")  carregarContatos();
+  if (page === "stats")     carregarStats();
+}
+
+/* ─── Toast ─── */
+function toast(msg, erro = false) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.borderColor = erro ? "var(--red)" : "var(--gold)";
+  t.style.color       = erro ? "var(--red)" : "var(--gs)";
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+/* ─── Fetch helper ─── */
+async function api(path, opts={}) {
+  const r = await fetch(API + path, { headers:{"Content-Type":"application/json"}, ...opts });
+  return r.json();
+}
+
+/* ─── DASHBOARD ─── */
+let todosOsProdutos = [];
+
+async function carregarDashboard() {
+  const d = new Date();
+  document.getElementById("dash-date").textContent =
+    d.toLocaleDateString("pt-BR", { weekday:"long", day:"numeric", month:"long" });
+
+  const data = await api("/api/stats");
+  if (!data.ok) return;
+  document.getElementById("kpi-produtos").textContent  = data.resumo.produtos;
+  document.getElementById("kpi-contatos").textContent  = data.resumo.contatos;
+  document.getElementById("kpi-views").textContent     = data.resumo.views;
+  document.getElementById("kpi-hoje").textContent      = data.resumo.contatosHoje;
+
+  const maxViews = Math.max(1, ...data.maisVistos.map(x => x.views));
+  document.getElementById("rank-lista").innerHTML = data.maisVistos.length
+    ? data.maisVistos.map(r => `
+        <div class="rank-row">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.nome || r.sku}</div>
+            <div class="rank-bar-wrap" style="margin-top:6px"><div class="rank-bar" style="width:${Math.round(r.views/maxViews*100)}%"></div></div>
+          </div>
+          <div class="rank-num">${r.views}</div>
+        </div>`).join("")
+    : `<div class="empty"><div>Sem visualizações ainda</div></div>`;
+
+  document.getElementById("ultimos-contatos").innerHTML = data.ultimosContatos.length
+    ? data.ultimosContatos.map(c => `
+        <div class="rank-row" style="flex-direction:column;align-items:flex-start;gap:3px">
+          <div style="font-size:13px"><strong>${c.nome}</strong> → ${c.produto}</div>
+          <div style="font-size:11px;color:var(--dim)">${c.criado_em}</div>
+        </div>`).join("")
+    : `<div class="empty"><div>Nenhum contato ainda</div></div>`;
+}
+
+/* ─── PRODUTOS ─── */
+async function carregarProdutos() {
+  const data = await api("/api/produtos?ativo=all");
+  if (!data.ok) { toast("Erro ao carregar produtos", true); return; }
+  todosOsProdutos = data.produtos.filter(p => p.categoria !== "masculino");
+  renderizarProdutos(todosOsProdutos);
+}
+
+function renderizarProdutos(lista) {
+  const catLabel = {feminino:"fem", novos:"novos"};
+  const tbody = document.getElementById("tabela-produtos");
+  if (!lista.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty">Nenhum produto encontrado</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = lista.map(p => `
+    <tr>
+      <td><img class="thumb" src="/${p.imagem}" alt="" onerror="this.style.display='none'"></td>
+      <td style="font-weight:500">${p.nome}</td>
+      <td style="color:var(--dim);font-size:12px;letter-spacing:.15em">${p.sku}</td>
+      <td><span class="badge ${catLabel[p.categoria]||''}">${p.categoria}</span></td>
+      <td style="font-size:12px;color:var(--dim)">${(p.tamanhos||[]).join(" · ")}</td>
+      <td><span class="badge ${p.ativo?'ativo':'inativo'}">${p.ativo?'Ativo':'Inativo'}</span></td>
+      <td>
+        <button class="btn btn-ghost btn-sm" onclick='editarProduto(${JSON.stringify(p)})'>Editar</button>
+      </td>
+    </tr>`).join("");
+}
+
+function filtrarProdutos() {
+  const q   = document.getElementById("search-produto").value.toLowerCase();
+  const cat = document.getElementById("filtro-cat").value;
+  const lista = todosOsProdutos.filter(p =>
+    (!cat || p.categoria === cat) &&
+    (!q   || p.nome.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q))
+  );
+  renderizarProdutos(lista);
+}
+
+/* ─── Modal editar ─── */
+function editarProduto(p) {
+  document.getElementById("edit-sku").value      = p.sku;
+  document.getElementById("edit-nome").value     = p.nome;
+  document.getElementById("edit-desc").value     = p.descricao || "";
+  document.getElementById("edit-tam").value      = (p.tamanhos||[]).join(", ");
+  document.getElementById("edit-preco").value    = p.preco || "";
+  document.getElementById("edit-ativo").value    = p.ativo ? "1" : "0";
+  document.getElementById("edit-destaque").value = p.destaque ? "1" : "0";
+  document.getElementById("modal-title").textContent = `Editar — ${p.nome}`;
+  document.getElementById("modal-overlay").classList.add("open");
+}
+
+function fecharModal() {
+  document.getElementById("modal-overlay").classList.remove("open");
+}
+
+async function salvarProduto() {
+  const sku = document.getElementById("edit-sku").value;
+  const body = {
+    nome:      document.getElementById("edit-nome").value,
+    descricao: document.getElementById("edit-desc").value,
+    tamanhos:  document.getElementById("edit-tam").value.split(",").map(s=>s.trim()).filter(Boolean),
+    preco:     document.getElementById("edit-preco").value,
+    ativo:     document.getElementById("edit-ativo").value === "1",
+    destaque:  document.getElementById("edit-destaque").value === "1"
+  };
+  const data = await api(`/api/produtos/${sku}`, { method:"PUT", body: JSON.stringify(body) });
+  if (data.ok) {
+    toast("Produto atualizado!");
+    fecharModal();
+    carregarProdutos();
+  } else {
+    toast("Erro ao salvar", true);
+  }
+}
+
+/* ─── CONTATOS ─── */
+async function carregarContatos() {
+  const data = await api("/api/contatos?limite=100");
+  if (!data.ok) return;
+  const tbody = document.getElementById("tabela-contatos");
+  if (!data.contatos.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty">Nenhum contato ainda</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.contatos.map(c => `
+    <tr>
+      <td style="color:var(--dim);font-size:12px">#${c.id}</td>
+      <td>
+        <div style="font-weight:500">${c.nome}</div>
+        ${c.telefone ? `<div style="font-size:11px;color:var(--dim)">${c.telefone}</div>` : ""}
+      </td>
+      <td>${c.produto}</td>
+      <td style="font-size:11px;color:var(--dim);letter-spacing:.1em">${c.sku||"—"}</td>
+      <td style="font-size:12px;color:var(--dim);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.mensagem||"—"}</td>
+      <td style="font-size:11px;color:var(--dim);white-space:nowrap">${c.criado_em}</td>
+      <td>
+        ${c.telefone
+          ? `<a class="btn btn-ghost btn-sm" href="https://wa.me/55${c.telefone.replace(/\D/g,'')}?text=${encodeURIComponent('Olá '+c.nome+'! Vi seu interesse em '+c.produto+'. Posso te ajudar?')}" target="_blank">WhatsApp</a>`
+          : ""}
+        <button class="btn btn-red btn-sm" onclick="excluirContato(${c.id})" style="margin-top:4px">Excluir</button>
+      </td>
+    </tr>`).join("");
+}
+
+async function excluirContato(id) {
+  if (!confirm("Excluir este contato?")) return;
+  const data = await api(`/api/contatos/${id}`, { method:"DELETE" });
+  if (data.ok) { toast("Contato removido"); carregarContatos(); }
+  else toast("Erro ao excluir", true);
+}
+
+/* ─── STATS ─── */
+async function carregarStats() {
+  const data = await api("/api/stats");
+  if (!data.ok) return;
+  const max = Math.max(1, ...data.maisVistos.map(x=>x.views));
+  document.getElementById("rank-full").innerHTML = data.maisVistos.length
+    ? data.maisVistos.map((r,i) => `
+        <div class="rank-row">
+          <div style="width:24px;text-align:center;font-size:13px;color:var(--dim)">${i+1}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px">${r.nome||r.sku} <span style="font-size:11px;color:var(--dim);letter-spacing:.1em">${r.sku}</span></div>
+            <div class="rank-bar-wrap" style="margin-top:5px"><div class="rank-bar" style="width:${Math.round(r.views/max*100)}%"></div></div>
+          </div>
+          <div class="rank-num">${r.views}</div>
+        </div>`).join("")
+    : `<div class="empty">Nenhuma visualização registrada ainda.<br>As visualizações aparecem quando os clientes abrem produtos no catálogo.</div>`;
+}
+
+/* ─── Fecha modal ao clicar fora ─── */
+document.getElementById("modal-overlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("modal-overlay")) fecharModal();
+});
+
+/* ─── Init ─── */
+carregarDashboard();
+
+/* ─── AUTENTICAÇÃO ADM ─── */
+(function() {
+  // Hash SHA-256 da senha + username (segredo nunca exposto em texto claro)
+  const ADM_USER_HASH   = "d98c3fd3dd83a33665a34213a2dbfda9fddea9a8716ce140a61e17fade095668";
+  const ADM_PASS_HASH   = "2949cd9e5e8d97d5805af480cfcafa7afce3a4d0c619fbb49539a809157ba50c";
+  const SESSION_KEY     = "_adm_ev_sess";
+  const SESSION_EXPIRE  = 8 * 60 * 60 * 1000; // 8 horas em ms
+  const MAX_ATTEMPTS    = 3;
+  const LOCK_TIME       = 30 * 60 * 1000; // 30 minutos bloqueado
+  const ATTEMPTS_KEY    = "_adm_ev_att";
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+  }
+
+  function getAttempts() {
+    try { return JSON.parse(sessionStorage.getItem(ATTEMPTS_KEY)) || {count:0,lockedUntil:0}; } catch{return {count:0,lockedUntil:0};}
+  }
+  function setAttempts(a) { sessionStorage.setItem(ATTEMPTS_KEY, JSON.stringify(a)); }
+
+  function isSessionValid() {
+    try {
+      const s = JSON.parse(sessionStorage.getItem(SESSION_KEY));
+      if (!s || !s.token || !s.exp) return false;
+      if (Date.now() > s.exp) { sessionStorage.removeItem(SESSION_KEY); return false; }
+      return true;
+    } catch { return false; }
+  }
+
+  function criarSessao() {
+    const token = crypto.randomUUID();
+    const exp   = Date.now() + SESSION_EXPIRE;
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({token, exp}));
+    // Renova a cada 30min enquanto ativo
+    setInterval(() => {
+      const s = JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null");
+      if (s && s.token === token) {
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify({token, exp: Date.now()+SESSION_EXPIRE}));
+      }
+    }, 30*60*1000);
+  }
+
+  function encerrarSessao() {
+    sessionStorage.removeItem(SESSION_KEY);
+    location.reload();
+  }
+
+  // Expõe logout globalmente
+  window.admLogout = encerrarSessao;
+
+  // Verifica sessão ao carregar
+  if (isSessionValid()) {
+    document.getElementById("login-screen").classList.add("hidden");
+    return;
+  }
+
+  // Bloqueia o painel enquanto não autenticado
+  document.getElementById("login-screen").classList.remove("hidden");
+
+  // Foco no campo usuário
+  window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("adm-user").focus();
+    document.getElementById("adm-pass").addEventListener("keydown", e => {
+      if (e.key === "Enter") admFazerLogin();
+    });
+    document.getElementById("adm-user").addEventListener("keydown", e => {
+      if (e.key === "Enter") document.getElementById("adm-pass").focus();
+    });
+    atualizarUI();
+  });
+
+  function atualizarUI() {
+    const a = getAttempts();
+    const agora = Date.now();
+    const btn = document.getElementById("adm-login-btn");
+    const att = document.getElementById("adm-attempts");
+    if (a.lockedUntil > agora) {
+      const min = Math.ceil((a.lockedUntil - agora)/60000);
+      att.innerHTML = `🔒 Bloqueado por ${min} min`;
+      btn.disabled = true;
+      setTimeout(atualizarUI, 10000);
+    } else {
+      btn.disabled = false;
+      if (a.count > 0) att.textContent = `Tentativas restantes: ${MAX_ATTEMPTS - a.count}`;
+    }
+  }
+
+  window.admFazerLogin = async function() {
+    const btn  = document.getElementById("adm-login-btn");
+    const err  = document.getElementById("adm-err");
+    const user = document.getElementById("adm-user").value.trim();
+    const pass = document.getElementById("adm-pass").value;
+    const a    = getAttempts();
+    const agora = Date.now();
+
+    // Bloqueado?
+    if (a.lockedUntil > agora) {
+      const min = Math.ceil((a.lockedUntil - agora)/60000);
+      err.textContent = `Muitas tentativas. Aguarde ${min} minuto(s).`;
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Verificando…";
+    err.textContent = "";
+
+    // Delay artificial (anti-brute-force timing)
+    await new Promise(r => setTimeout(r, 600 + Math.random()*400));
+
+    const userHash = await sha256(user.toLowerCase());
+    const passHash = await sha256(pass);
+
+    if (userHash === ADM_USER_HASH && passHash === ADM_PASS_HASH) {
+      setAttempts({count:0,lockedUntil:0});
+      criarSessao();
+      document.getElementById("adm-pass").value = "";
+      document.getElementById("login-screen").classList.add("hidden");
+      btn.textContent = "Entrar";
+      btn.disabled = false;
+    } else {
+      a.count++;
+      if (a.count >= MAX_ATTEMPTS) {
+        a.lockedUntil = agora + LOCK_TIME;
+        a.count = MAX_ATTEMPTS;
+        err.textContent = "Conta bloqueada por 15 minutos.";
+      } else {
+        err.textContent = "Usuário ou senha incorretos.";
+      }
+      setAttempts(a);
+      atualizarUI();
+      document.getElementById("adm-pass").value = "";
+      btn.textContent = "Entrar";
+      btn.disabled = false;
+    }
+  };
+})();
+
+</script>
+</body>
+</html>

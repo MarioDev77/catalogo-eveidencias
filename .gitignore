@@ -1,0 +1,55 @@
+# ── Dependências ──────────────────────────
+node_modules/
+.npm/
+
+# ── Banco de dados (gerado em runtime) ────
+backend/data/
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# ── Variáveis de ambiente e SENHAS ────────
+.env
+.env.local
+.env.*.local
+# Mantenha apenas o .env.example no repo
+!.env.example
+
+# ── Logs ──────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Build / cache ─────────────────────────
+dist/
+build/
+.cache/
+.parcel-cache/
+
+# ── Sistema operacional ───────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editores ──────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Uploads e arquivos temporários ────────
+uploads/
+tmp/
+temp/
+
+# ── Arquivos comprometedores / privados ───
+# Nunca commitar dados reais de clientes
+backend/data/catalogo.db
+*.backup
+*.sql.gz
+contatos_export*.csv
+relatorio*.xlsx
