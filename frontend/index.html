@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evidências Modas — Catálogo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & VARIÁVEIS ===== */
+    :root {
+      --bg: #0e0d0b;
+      --bg-soft: #15140f;
+      --bg-card: #131210;
+      --ink: #f3ede1;
+      --ink-dim: #a89e8b;
+      --line: rgba(191,155,48,.22);
+      --gold: #bf9b30;
+      --gold-soft: #d9be6c;
+      --gold-glow: rgba(191,155,48,.15);
+      --green: #25D366;
+      --radius: 2px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    img{display:block;max-width:100%;height:auto}
+    a{color:inherit;text-decoration:none}
+
+    /* ===== TOPBAR ===== */
+    .topbar{position:sticky;top:0;z-index:100;background:rgba(14,13,11,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+    .topbar-inner{max-width:1320px;margin:0 auto;padding:16px 28px;display:flex;justify-content:space-between;align-items:center;gap:24px}
+    .brand{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:22px;letter-spacing:.32em;text-transform:uppercase}
+    .brand span{color:var(--gold)}
+    .nav{display:flex;gap:28px;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);align-items:center}
+    .nav a{transition:color .25s}.nav a:hover{color:var(--gold-soft)}
+    .btn-adm{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);padding:7px 14px;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-dim);background:transparent;cursor:pointer;transition:border-color .25s,color .25s,background .25s;white-space:nowrap;text-decoration:none}
+    .btn-adm:hover{border-color:var(--gold);color:var(--gold);background:rgba(191,155,48,.07)}
+    .btn-adm svg{width:12px;height:12px;fill:currentColor;flex-shrink:0}
+    @media(max-width:720px){.nav{display:none}}
+
+    /* ===== HERO ===== */
+    .hero{position:relative;min-height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px;overflow:hidden;border-bottom:1px solid var(--line)}
+    .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 500px at 20% 10%,rgba(191,155,48,.12),transparent 60%),radial-gradient(700px 500px at 80% 90%,rgba(191,155,48,.08),transparent 60%);pointer-events:none}
+    .hero .eyebrow{font-size:11px;letter-spacing:.6em;color:var(--gold);text-transform:uppercase;margin-bottom:28px}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(44px,7vw,92px);line-height:1.02;letter-spacing:-.01em;max-width:940px;margin:0 auto}
+    .hero h1 em{font-style:italic;color:var(--gold-soft);font-weight:300}
+    .hero p{margin:32px auto 0;max-width:560px;color:var(--ink-dim);font-size:15px;line-height:1.7;font-weight:300}
+    .hr-orn{display:flex;align-items:center;justify-content:center;gap:18px;margin:42px 0 6px}
+    .hr-orn span{height:1px;width:60px;background:var(--gold);opacity:.55}
+    .hr-orn::before,.hr-orn::after{content:"";display:block;width:6px;height:6px;border:1px solid var(--gold);transform:rotate(45deg)}
+
+    /* ===== SECTION ===== */
+    .section{max-width:1320px;margin:0 auto;padding:100px 28px 40px}
+    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-bottom:32px;border-bottom:1px solid var(--line);margin-bottom:56px}
+    .section-head h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(32px,4.4vw,54px);letter-spacing:-.01em}
+    .section-head h2 em{font-style:italic;color:var(--gold-soft);font-weight:300}
+    .section-head .meta{font-size:11px;letter-spacing:.4em;color:var(--ink-dim);text-transform:uppercase;text-align:right}
+
+    /* ===== GRID ===== */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:48px 32px;align-items:stretch}
+    @media(max-width:1060px){.grid{grid-template-columns:repeat(2,1fr);gap:40px 24px}}
+    @media(max-width:600px){.grid{grid-template-columns:1fr;gap:44px}}
+
+    /* ===== CARD ===== */
+    .card{position:relative;display:flex;flex-direction:column;gap:0;transition:transform .5s cubic-bezier(.22,.97,.52,1.07)}
+    .card:hover{transform:translateY(-6px)}
+    .card .frame{position:relative;overflow:hidden;background:var(--bg-card);border:1px solid var(--line);aspect-ratio:4/5;margin-bottom:20px;cursor:zoom-in}
+    .card .frame img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 1.2s ease,filter .6s ease;filter:saturate(.92) contrast(1.02)}
+    .card:hover .frame img{transform:scale(1.06)}
+
+    /* Overlay zoom hint */
+    .card .frame::after{content:"🔍";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:32px;background:rgba(0,0,0,.45);opacity:0;transition:opacity .3s;pointer-events:none}
+    .card .frame:hover::after{opacity:1}
+
+    .card .index{position:absolute;top:14px;left:16px;font-family:'Cormorant Garamond',serif;font-style:italic;color:#fff;font-size:14px;letter-spacing:.1em;z-index:2;mix-blend-mode:difference}
+    .card .badge{position:absolute;top:14px;right:14px;background:rgba(14,13,11,.82);border:1px solid var(--line);color:var(--gold-soft);font-size:9.5px;letter-spacing:.22em;padding:6px 11px;text-transform:uppercase;backdrop-filter:blur(4px);z-index:2}
+    
+    /* Botão de zoom no card */
+    .btn-zoom{position:absolute;bottom:14px;right:14px;z-index:3;background:rgba(14,13,11,.85);border:1px solid var(--line);color:var(--gold-soft);font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:8px 14px;cursor:pointer;backdrop-filter:blur(8px);transition:background .25s,color .25s;display:flex;align-items:center;gap:6px}
+    .btn-zoom:hover{background:rgba(191,155,48,.2);color:var(--gold)}
+    .btn-zoom svg{width:13px;height:13px;fill:currentColor}
+
+    /* Botão de compartilhar */
+    .btn-share{position:absolute;bottom:14px;left:14px;z-index:3;background:rgba(14,13,11,.85);border:1px solid var(--line);color:var(--ink-dim);font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:8px 14px;cursor:pointer;backdrop-filter:blur(8px);transition:background .25s,color .25s;display:flex;align-items:center;gap:6px}
+    .btn-share:hover{background:rgba(255,255,255,.06);color:var(--ink)}
+    .btn-share svg{width:13px;height:13px;fill:currentColor}
+
+    .card h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:21px;letter-spacing:.01em;line-height:1.2;margin-bottom:4px}
+    .card .sku{font-size:10.5px;letter-spacing:.32em;color:var(--ink-dim);text-transform:uppercase;margin-bottom:14px}
+    .card .desc{color:var(--ink-dim);font-size:13px;font-weight:300;line-height:1.65;margin-bottom:14px;flex:1;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+    .card .sizes{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+    .card .sizes span{font-size:10px;letter-spacing:.18em;color:var(--ink-dim);border:1px solid var(--line);padding:5px 9px}
+    .card .meta-row{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:14px;margin-top:auto}
+    .card .price{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold-soft);letter-spacing:.06em}
+    .card .cta{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink);border-bottom:1px solid var(--gold);padding-bottom:3px;transition:color .3s}
+    .card .cta:hover{color:var(--gold-soft)}
+
+    /* ===== TOAST (copied!) ===== */
+    .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg-soft);border:1px solid var(--gold);color:var(--gold-soft);font-size:12px;letter-spacing:.28em;text-transform:uppercase;padding:14px 28px;z-index:9999;transition:transform .4s cubic-bezier(.22,.97,.52,1.07),opacity .4s;opacity:0;pointer-events:none;backdrop-filter:blur(12px)}
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+    /* ===== MODAL ZOOM ===== */
+    .modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s}
+    .modal-overlay.open{opacity:1;pointer-events:all}
+    .modal-box{position:relative;width:min(92vw,900px);max-height:92vh;display:flex;flex-direction:column;gap:0;transform:scale(.95);transition:transform .35s cubic-bezier(.22,.97,.52,1.07)}
+    .modal-overlay.open .modal-box{transform:scale(1)}
+    
+    .modal-img-wrap{position:relative;overflow:hidden;background:#0a0909;border:1px solid var(--line);flex:1;min-height:0;cursor:zoom-in}
+    .modal-img-wrap.zoomed{cursor:crosshair}
+    .modal-img-wrap img{width:100%;height:100%;object-fit:contain;max-height:70vh;transition:transform .25s ease;transform-origin:center center;user-select:none;-webkit-user-drag:none;display:block}
+
+    /* Zoom controls */
+    .zoom-controls{display:flex;align-items:center;gap:8px;padding:14px 18px;background:var(--bg-soft);border:1px solid var(--line);border-top:none;flex-wrap:wrap;justify-content:space-between}
+    .zoom-controls .left{display:flex;align-items:center;gap:8px}
+    .zoom-btn{background:transparent;border:1px solid var(--line);color:var(--ink-dim);width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:background .2s,color .2s;flex-shrink:0}
+    .zoom-btn:hover{background:var(--gold-glow);color:var(--gold)}
+    .zoom-label{font-size:11px;letter-spacing:.22em;color:var(--ink-dim);text-transform:uppercase;min-width:44px;text-align:center}
+    .zoom-reset{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);border:1px solid var(--line);padding:8px 14px;background:transparent;cursor:pointer;transition:background .2s,color .2s}
+    .zoom-reset:hover{background:var(--gold-glow);color:var(--gold)}
+
+    .modal-info{padding:18px 20px;background:var(--bg-soft);border:1px solid var(--line);border-top:none;display:flex;flex-direction:column;gap:4px}
+    .modal-info-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .modal-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500}
+    .modal-sku{font-size:10px;letter-spacing:.35em;color:var(--ink-dim);text-transform:uppercase}
+    .modal-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .modal-wpp{display:inline-flex;align-items:center;gap:9px;background:var(--green);color:#fff;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:11px 22px;transition:background .25s,transform .2s;white-space:nowrap}
+    .modal-wpp:hover{background:#1ebe5d;transform:translateY(-1px)}
+    .modal-wpp svg{width:16px;height:16px;fill:#fff;flex-shrink:0}
+    .modal-share-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--ink-dim);font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:11px 18px;cursor:pointer;transition:background .2s,color .2s;white-space:nowrap}
+    .modal-share-btn:hover{background:rgba(255,255,255,.05);color:var(--ink)}
+    .modal-share-btn svg{width:14px;height:14px;fill:currentColor;flex-shrink:0}
+
+    /* Fechar */
+    .modal-close{position:absolute;top:-44px;right:0;background:transparent;border:none;color:var(--ink-dim);font-size:28px;cursor:pointer;transition:color .2s;line-height:1;padding:8px}
+    .modal-close:hover{color:var(--gold)}
+
+    /* Setas de navegação */
+    .modal-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(14,13,11,.75);border:1px solid var(--line);color:var(--ink-dim);width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;backdrop-filter:blur(8px);transition:background .2s,color .2s;z-index:2;user-select:none}
+    .modal-nav:hover{background:rgba(191,155,48,.2);color:var(--gold)}
+    .modal-nav.prev{left:-56px}
+    .modal-nav.next{right:-56px}
+    @media(max-width:720px){
+      .modal-nav.prev{left:8px}.modal-nav.next{right:8px}
+    }
+
+    /* ===== BANNER WHATSAPP ===== */
+    .whatsapp-banner{max-width:1320px;margin:80px auto 0;padding:0 28px}
+    .whatsapp-card{display:flex;align-items:center;justify-content:space-between;gap:32px;background:var(--bg-soft);border:1px solid var(--line);padding:40px 48px;flex-wrap:wrap}
+    .whatsapp-card .wpp-text h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:30px;margin-bottom:8px}
+    .whatsapp-card .wpp-text h3 em{font-style:italic;color:var(--gold-soft)}
+    .whatsapp-card .wpp-text p{color:var(--ink-dim);font-size:14px;font-weight:300;line-height:1.6}
+    .whatsapp-btn{display:inline-flex;align-items:center;gap:12px;background:var(--green);color:#fff;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:16px 32px;transition:background .3s,transform .2s;white-space:nowrap;text-decoration:none}
+    .whatsapp-btn:hover{background:#1ebe5d;transform:translateY(-2px);color:#fff}
+    .whatsapp-btn svg{width:20px;height:20px;fill:#fff;flex-shrink:0}
+    @media(max-width:720px){.whatsapp-card{padding:32px 24px;flex-direction:column;align-items:flex-start}.whatsapp-btn{width:100%;justify-content:center}}
+
+    /* ===== FOOTER ===== */
+    footer{margin-top:140px;padding:80px 28px 60px;border-top:1px solid var(--line);background:var(--bg-soft)}
+    .foot-inner{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px}
+    @media(max-width:820px){.foot-inner{grid-template-columns:1fr;gap:36px}}
+    footer h4{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:21px;margin-bottom:14px}
+    footer p,footer li{color:var(--ink-dim);font-size:13px;line-height:1.8;font-weight:300}
+    footer ul{list-style:none}
+    footer .wpp-link{display:inline-flex;align-items:center;gap:8px;color:var(--green);font-weight:500;transition:opacity .2s}
+    footer .wpp-link:hover{opacity:.8}
+    footer .wpp-link svg{width:15px;height:15px;fill:var(--green)}
+    .credit{max-width:1320px;margin:50px auto 0;padding-top:30px;border-top:1px solid var(--line);font-size:11px;letter-spacing:.32em;color:var(--ink-dim);text-transform:uppercase;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+
+    /* ===== REVEAL ANIMATION ===== */
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform .9s ease}
+    .reveal.in{opacity:1;transform:none}
+
+    /* ===== SPLASH ===== */
+    #splash{position:fixed;inset:0;z-index:9999;background:#0e0d0b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;pointer-events:all;transition:opacity .7s ease,visibility .7s ease}
+    #splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+
+    .splash-ring{position:relative;width:120px;height:120px;margin-bottom:36px}
+    .splash-ring svg{width:120px;height:120px;animation:spin-ring 2s linear infinite}
+    .splash-ring svg circle{fill:none;stroke:rgba(191,155,48,.18);stroke-width:1.5}
+    .splash-ring svg circle.arc{stroke:var(--gold);stroke-dasharray:60 220;stroke-linecap:round;animation:dash-arc 2s ease-in-out infinite}
+    @keyframes spin-ring{to{transform:rotate(360deg)}}
+    @keyframes dash-arc{0%{stroke-dashoffset:0}50%{stroke-dashoffset:-120}100%{stroke-dashoffset:-280}}
+
+    .splash-logo-img{width:min(260px,70vw);height:auto;margin-bottom:24px;filter:drop-shadow(0 18px 45px rgba(191,155,48,.18));animation:logo-in .75s ease forwards}
+    @keyframes logo-in{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
+    .splash-logo{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:38px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink);text-align:center;overflow:hidden;white-space:nowrap}
+    .splash-logo span{color:var(--gold)}
+    .splash-logo .letra{display:inline-block;opacity:0;transform:translateY(14px);animation:letra-in .5s ease forwards}
+    @keyframes letra-in{to{opacity:1;transform:none}}
+
+    .splash-sub{font-size:10px;letter-spacing:.55em;text-transform:uppercase;color:var(--gold);margin-top:14px;opacity:0;animation:fade-in .6s ease .9s forwards}
+    @keyframes fade-in{to{opacity:1}}
+
+    .splash-bar{width:120px;height:1px;background:rgba(191,155,48,.2);margin-top:36px;overflow:hidden;opacity:0;animation:fade-in .3s ease .6s forwards}
+    .splash-bar-fill{height:100%;width:0;background:var(--gold);animation:bar-fill 1.6s cubic-bezier(.4,0,.2,1) .7s forwards}
+    @keyframes bar-fill{to{width:100%}}
+  </style>
+</head>
+<body>
+
+
+<!-- SPLASH -->
+<div id="splash">
+  <img class="splash-logo-img" src="images/logo-evidencia.jpeg" alt="Evidencia Moda Feminina">
+  <div class="splash-sub">Moda · Estilo · Elegância</div>
+  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+</div>
+
+<!-- HEADER -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">Evidências <span>·</span> Modas</div>
+    <nav class="nav">
+      <a href="#feminino">Feminino</a>
+      <a href="#novos">Novos Modelos</a>
+      <a href="#contato">Contato</a>
+      <a href="#" class="btn-adm" title="Painel Administrativo" onclick="abrirAdmin(event)">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+        Admin
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="eyebrow">Catálogo · Edição Atemporal</div>
+    <h1>O essencial em <em>alfaiataria</em><br/>e <em>moda feminina</em> que veste com presença.</h1>
+    <div class="hr-orn"><span></span></div>
+    <p>Peças selecionadas com tecidos nobres, modelagem precisa e acabamento impecável. Uma coleção pensada para quem busca elegância sem esforço.</p>
+  </div>
+</section>
+
+<!-- LINHA FEMININA -->
+<section class="section" id="feminino">
+  <div class="section-head">
+    <h2>Linha <em>Feminina</em></h2>
+    <div class="meta">05 peças · Coleção atual</div>
+  </div>
+  <div class="grid" id="grid-feminino"></div>
+</section>
+
+<!-- NOVOS MODELOS -->
+<section class="section" id="novos">
+  <div class="section-head">
+    <h2>Novos <em>Modelos</em></h2>
+    <div class="meta">20 peças · Edição recente</div>
+  </div>
+  <div class="grid" id="grid-novos"></div>
+</section>
+
+<!-- BANNER WHATSAPP -->
+<div class="whatsapp-banner reveal">
+  <div class="whatsapp-card">
+    <div class="wpp-text">
+      <h3>Gostou de alguma peça? <em>Fale agora</em></h3>
+      <p>Atendimento personalizado via WhatsApp. Consulte tamanhos, valores e disponibilidade diretamente com a vendedora.</p>
+    </div>
+    <a id="wpp-banner-btn" href="#" target="_blank" rel="noopener noreferrer" class="whatsapp-btn">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chamar no WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="contato">
+  <div class="foot-inner">
+    <div>
+      <h4>Evidências Modas</h4>
+      <p>Peças exclusivas com tecidos selecionados, modelagem moderna e caimento impecável. Atendimento personalizado para revenda e varejo.</p>
+    </div>
+    <div>
+      <h4>Atendimento</h4>
+      <ul>
+        <li>
+          <a id="wpp-footer-link" href="#" target="_blank" rel="noopener noreferrer" class="wpp-link">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            (75) 9962-9970
+          </a>
+        </li>
+        <li>Instagram · @evidenciasmodas</li>
+        <li>E-mail · contato@evidenciasmodas.com</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Informações</h4>
+      <ul>
+        <li>Envio para todo o Brasil</li>
+        <li>Troca facilitada em até 7 dias</li>
+        <li>Atendimento de segunda a sábado</li>
+      </ul>
+    </div>
+  </div>
+  <div class="credit">
+    <span>© Evidências Modas · Todos os direitos reservados</span>
+    <span>Catálogo · 2026</span>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Link copiado!</div>
+
+<!-- MODAL ZOOM -->
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close" aria-label="Fechar">&#x2715;</button>
+    <button class="modal-nav prev" id="modal-prev" aria-label="Anterior">&#8592;</button>
+    <button class="modal-nav next" id="modal-next" aria-label="Próximo">&#8594;</button>
+
+    <div class="modal-img-wrap" id="modal-img-wrap">
+      <img id="modal-img" src="" alt="" draggable="false" />
+    </div>
+
+    <div class="zoom-controls">
+      <div class="left">
+        <button class="zoom-btn" id="zoom-out" aria-label="Diminuir zoom">&#8722;</button>
+        <span class="zoom-label" id="zoom-label">100%</span>
+        <button class="zoom-btn" id="zoom-in" aria-label="Aumentar zoom">&#43;</button>
+        <button class="zoom-reset" id="zoom-reset">Resetar</button>
+      </div>
+      <span style="font-size:11px;color:var(--ink-dim);letter-spacing:.15em">Arraste para mover · Scroll para zoom</span>
+    </div>
+
+    <div class="modal-info">
+      <div class="modal-info-row">
+        <div>
+          <div class="modal-title" id="modal-title"></div>
+          <div class="modal-sku" id="modal-sku"></div>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-share-btn" id="modal-share-btn">
+            <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 0018 8c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81A2.99 2.99 0 006 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+            Compartilhar link
+          </button>
+          <a class="modal-wpp" id="modal-wpp-link" href="#" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Pedir via WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================
+   CONFIGURAÇÃO
+   ========================================= */
+const WHATSAPP_NUMBER = "5575998728587";
+// Detecta se está rodando com servidor ou direto (file://)
+const IS_SERVER = location.protocol !== 'file:';
+const API_BASE = IS_SERVER ? "" : null; // null = sem API, usa dados embutidos
+
+/* Abre o painel admin na porta correta (3000 se estiver no Live Server) */
+function abrirAdmin(e) {
+  e.preventDefault();
+  const port = location.port;
+  if (port === '5500' || port === '5501' || location.protocol === 'file:') {
+    window.open('http://localhost:3000/admin/', '_blank');
+  } else {
+    window.open(location.origin + '/admin/', '_blank');
+  }
+}
+
+function getWhatsAppLink(msg = "") {
+  const texto = msg
+    ? encodeURIComponent(msg)
+    : encodeURIComponent("Olá! Vim pelo catálogo e gostaria de saber mais sobre as peças.");
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`;
+}
+
+/* =========================================
+   LISTA GLOBAL de todos os produtos (carregados da API)
+   ========================================= */
+let allProducts = [];
+
+/* =========================================
+   CARD HTML
+   ========================================= */
+function card(p, category) {
+  const cat = category || p.categoria || 'produto';
+  const wppMsg = `Olá! Tenho interesse na peça *${p.nome}* (Ref. ${p.sku}). Poderia me passar mais informações e valores?`;
+  const wppLink = getWhatsAppLink(wppMsg);
+  const productId = p.id || `${cat}-${p.sku}`;
+
+  return `
+  <article class="card reveal" data-product-id="${productId}">
+    <div class="frame" onclick="openModal('${productId}')">
+      <span class="index">N° ${p.n != null ? String(p.n).padStart(2,'0') : p.sku.replace(/\D/g,'').slice(-2).padStart(2,'0') || '—'}</span>
+      <span class="badge">Com Lycra</span>
+      <img src="${p.imagem || p.img}" alt="${p.nome}" loading="lazy" />
+      <button class="btn-zoom" onclick="event.stopPropagation();openModal('${productId}')" title="Ver em zoom">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        Zoom
+      </button>
+      <button class="btn-share" onclick="event.stopPropagation();shareProduct('${productId}','${p.nome}')" title="Compartilhar">
+        <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 0018 8c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81A2.99 2.99 0 006 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+        Link
+      </button>
+    </div>
+    <div>
+      <h3>${p.nome}</h3>
+      <div class="sku">Ref. ${p.sku}</div>
+    </div>
+    <p class="desc">${p.descricao || p.desc || ''}</p>
+    <div class="sizes">${p.tamanhos.map(t=>`<span>${t}</span>`).join('')}</div>
+    <div class="meta-row">
+      <span class="price">Consulte valores</span>
+      <a class="cta" href="${wppLink}" target="_blank" rel="noopener noreferrer">Pedir via WhatsApp →</a>
+    </div>
+  </article>`;
+}
+
+/* =========================================
+   SHARE / LINK
+   ========================================= */
+function shareProduct(productId, nome) {
+  const url = `${location.origin}${location.pathname}?produto=${encodeURIComponent(productId)}`;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => showToast("Link copiado!"));
+  } else {
+    const ta = document.createElement("textarea");
+    ta.value = url;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    showToast("Link copiado!");
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+/* =========================================
+   MODAL ZOOM — reescrito (transform-origin: center center)
+   ========================================= */
+let modalCurrentIdx = 0;
+let zoomLevel = 1;
+// panX/panY são offsets em pixels NO ESPAÇO DA IMAGEM (antes do scale)
+let panX = 0, panY = 0;
+let isPanning = false;
+let startPanX = 0, startPanY = 0;
+let startMouseX = 0, startMouseY = 0;
+
+function openModal(productId) {
+  const idx = allProducts.findIndex(p => p.id === productId);
+  if (idx < 0) return;
+  modalCurrentIdx = idx;
+  loadModalProduct(idx);
+  document.getElementById("modal").classList.add("open");
+  if (allProducts[idx]) registrarView(allProducts[idx].sku);
+  document.body.style.overflow = "hidden";
+  resetZoom();
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.remove("open");
+  document.body.style.overflow = "";
+  resetZoom();
+}
+
+function loadModalProduct(idx) {
+  const p = allProducts[idx];
+  if (!p) return;
+
+  const img = document.getElementById("modal-img");
+  img.src = p.imagem || p.img || '';
+  img.alt = p.nome;
+
+  document.getElementById("modal-title").textContent = p.nome;
+  document.getElementById("modal-sku").textContent = `Ref. ${p.sku}`;
+
+  const wppMsg = `Olá! Tenho interesse na peça *${p.nome}* (Ref. ${p.sku}). Poderia me passar mais informações e valores?`;
+  document.getElementById("modal-wpp-link").href = getWhatsAppLink(wppMsg);
+  document.getElementById("modal-share-btn").onclick = () => shareProduct(p.id, p.nome);
+
+  resetZoom();
+}
+
+function resetZoom() {
+  zoomLevel = 1;
+  panX = 0;
+  panY = 0;
+  applyTransform();
+}
+
+function applyTransform() {
+  const img = document.getElementById("modal-img");
+  // Com transform-origin:center, translate acontece DEPOIS do scale
+  // Então: primeiro escala no centro, depois translada
+  img.style.transform = `scale(${zoomLevel}) translate(${panX}px, ${panY}px)`;
+  document.getElementById("zoom-label").textContent = Math.round(zoomLevel * 100) + "%";
+  const wrap = document.getElementById("modal-img-wrap");
+  wrap.classList.toggle("zoomed", zoomLevel > 1);
+  wrap.style.cursor = zoomLevel > 1 ? (isPanning ? "grabbing" : "grab") : "zoom-in";
+}
+
+function clampPan() {
+  // Limita o pan para não sair da área visível
+  const wrap = document.getElementById("modal-img-wrap");
+  const img  = document.getElementById("modal-img");
+  const ww = wrap.offsetWidth,  wh = wrap.offsetHeight;
+  const iw = img.offsetWidth,   ih = img.offsetHeight;
+  // Máximo deslocamento permitido (em pixels do espaço pré-scale)
+  const maxX = Math.max(0, (iw * zoomLevel - ww) / (2 * zoomLevel));
+  const maxY = Math.max(0, (ih * zoomLevel - wh) / (2 * zoomLevel));
+  panX = Math.max(-maxX, Math.min(maxX, panX));
+  panY = Math.max(-maxY, Math.min(maxY, panY));
+}
+
+function changeZoom(delta, clientX, clientY) {
+  const wrap = document.getElementById("modal-img-wrap");
+  const img  = document.getElementById("modal-img");
+  const rect = wrap.getBoundingClientRect();
+
+  const prevZoom = zoomLevel;
+  zoomLevel = Math.max(1, Math.min(5, zoomLevel + delta));
+
+  if (zoomLevel === 1) {
+    panX = 0;
+    panY = 0;
+  } else if (clientX !== undefined && clientY !== undefined) {
+    // Cursor relativo ao centro do wrapper
+    const cx = (clientX - rect.left) - rect.width / 2;
+    const cy = (clientY - rect.top)  - rect.height / 2;
+    // Ajusta pan para que o ponto sob o cursor não se mova
+    // No espaço pré-scale: ponto = (cx / prevZoom) - panX
+    // Queremos: (cx / newZoom) - newPanX = (cx / prevZoom) - panX
+    panX = (cx / prevZoom) - (cx / zoomLevel) + panX;
+    panY = (cy / prevZoom) - (cy / zoomLevel) + panY;
+  }
+
+  clampPan();
+  applyTransform();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const imgWrap = document.getElementById("modal-img-wrap");
+
+  /* ── Pan por mouse ── */
+  imgWrap.addEventListener("mousedown", e => {
+    if (zoomLevel <= 1) return;
+    e.preventDefault();
+    isPanning = true;
+    startMouseX = e.clientX;
+    startMouseY = e.clientY;
+    startPanX = panX;
+    startPanY = panY;
+    imgWrap.style.cursor = "grabbing";
+  });
+
+  window.addEventListener("mousemove", e => {
+    if (!isPanning) return;
+    // Deslocamento em pixels de tela → converter para espaço pré-scale
+    panX = startPanX + (e.clientX - startMouseX) / zoomLevel;
+    panY = startPanY + (e.clientY - startMouseY) / zoomLevel;
+    clampPan();
+    applyTransform();
+  });
+
+  window.addEventListener("mouseup", () => {
+    if (!isPanning) return;
+    isPanning = false;
+    applyTransform(); // atualiza cursor via applyTransform
+  });
+
+  /* ── Scroll para zoom ── */
+  imgWrap.addEventListener("wheel", e => {
+    e.preventDefault();
+    changeZoom(e.deltaY < 0 ? 0.3 : -0.3, e.clientX, e.clientY);
+  }, { passive: false });
+
+  /* ── Touch pinch-to-zoom ── */
+  let lastDist = 0;
+  let lastTouchMidX = 0, lastTouchMidY = 0;
+  imgWrap.addEventListener("touchstart", e => {
+    if (e.touches.length === 2) {
+      lastDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      lastTouchMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      lastTouchMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    }
+  }, { passive: true });
+
+  imgWrap.addEventListener("touchmove", e => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      changeZoom((dist - lastDist) * 0.012, midX, midY);
+      lastDist = dist;
+      lastTouchMidX = midX;
+      lastTouchMidY = midY;
+    }
+  }, { passive: false });
+
+  /* ── Botões de zoom ── */
+  document.getElementById("zoom-in").addEventListener("click", () => changeZoom(0.5));
+  document.getElementById("zoom-out").addEventListener("click", () => changeZoom(-0.5));
+  document.getElementById("zoom-reset").addEventListener("click", resetZoom);
+
+  /* Fechar modal */
+  document.getElementById("modal-close").addEventListener("click", closeModal);
+  document.getElementById("modal").addEventListener("click", e => {
+    if (e.target === document.getElementById("modal")) closeModal();
+  });
+
+  /* Navegação prev/next */
+  document.getElementById("modal-prev").addEventListener("click", () => {
+    modalCurrentIdx = (modalCurrentIdx - 1 + allProducts.length) % allProducts.length;
+    loadModalProduct(modalCurrentIdx);
+  });
+  document.getElementById("modal-next").addEventListener("click", () => {
+    modalCurrentIdx = (modalCurrentIdx + 1) % allProducts.length;
+    loadModalProduct(modalCurrentIdx);
+  });
+
+  /* Teclado */
+  document.addEventListener("keydown", e => {
+    if (!document.getElementById("modal").classList.contains("open")) return;
+    if (e.key === "Escape") closeModal();
+    if (e.key === "ArrowLeft") {
+      modalCurrentIdx = (modalCurrentIdx - 1 + allProducts.length) % allProducts.length;
+      loadModalProduct(modalCurrentIdx);
+    }
+    if (e.key === "ArrowRight") {
+      modalCurrentIdx = (modalCurrentIdx + 1) % allProducts.length;
+      loadModalProduct(modalCurrentIdx);
+    }
+    if (e.key === "+") changeZoom(0.5);
+    if (e.key === "-") changeZoom(-0.5);
+    if (e.key === "0") resetZoom();
+  });
+
+  /* WhatsApp links globais */
+  document.getElementById("wpp-banner-btn").href = getWhatsAppLink();
+  document.getElementById("wpp-footer-link").href = getWhatsAppLink();
+
+  /* Reveal on scroll helper */
+  function ativarReveal() {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll(".reveal:not(.in)").forEach(el => io.observe(el));
+  }
+
+  /* Dados estáticos de fallback (quando aberto sem servidor) */
+  const PRODUTOS_FALLBACK = [
+    {id:"feminino-AT-001", sku:"AT-001", nome:"Conjunto Soraia", descricao:"Conjunto blazer e shorts em alfaiataria leve, cor chocolate. Caimento estruturado, fivela metálica e modelagem que valoriza a silhueta.", categoria:"feminino", imagem:"images/produto_01.png",  tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"feminino-AT-J05", sku:"AT-J05", nome:"Calça Lumière", descricao:"Calça jeans cintura alta em lavagem clara, modelagem skinny com lycra para conforto e sustentação.", categoria:"feminino", imagem:"images/produto_05.jpeg", tamanhos:["36","38","40","44","46"], preco:"Consulte valores", ativo:true},
+    {id:"feminino-AT-J08", sku:"AT-J08", nome:"Calça Noir Modeladora", descricao:"Jeans escuro com efeito modelador, cintura alta e elastano. Realça curvas com sofisticação.", categoria:"feminino", imagem:"images/produto_08.jpeg", tamanhos:["38","40","42","44","46"], preco:"Consulte valores", ativo:true},
+    {id:"feminino-AT-J10", sku:"AT-J10", nome:"Calça Bardot", descricao:"Edição limitada em lavagem média uniforme. Cintura alta com lycra, recortes precisos.", categoria:"feminino", imagem:"images/produto_10.jpeg", tamanhos:["36","38"], preco:"Consulte valores", ativo:true},
+    {id:"feminino-AT-J14", sku:"AT-J14", nome:"Calça Indigo Premium", descricao:"Jeans azul escuro com leve desgaste, costura aparente e modelagem skinny ajustada.", categoria:"feminino", imagem:"images/produto_14.jpeg", tamanhos:["36","38","40","46"], preco:"Consulte valores", ativo:true},
+    ...Array.from({length:20},(_,i)=>{const n=String(i+1).padStart(2,'0');return{id:`novos-AT-N${n}`,sku:`AT-N${n}`,nome:`Modelo Novo ${n}`,descricao:"Nova peça da coleção recém-chegada.",categoria:"novos",imagem:`images/novo_${n}.jpeg`,tamanhos:["P","M","G"],preco:"Consulte valores",ativo:true};})
+  ];
+
+  function renderizarProdutos(lista) {
+    const produtosVisiveis = lista.filter(p=>p.categoria!=="masculino");
+    document.getElementById("grid-feminino").innerHTML  = produtosVisiveis.filter(p=>p.categoria==="feminino").map(card).join("") || "<p style='color:var(--ink-dim);padding:20px 0'>Nenhuma peça disponível.</p>";
+    document.getElementById("grid-novos").innerHTML     = produtosVisiveis.filter(p=>p.categoria==="novos").map(card).join("") || "<p style='color:var(--ink-dim);padding:20px 0'>Nenhuma peça disponível.</p>";
+    ativarReveal();
+    const params = new URLSearchParams(location.search);
+    const produtoParam = params.get("produto");
+    if (produtoParam) setTimeout(() => openModal(decodeURIComponent(produtoParam)), 400);
+  }
+
+  /* Carrega produtos — tenta API primeiro, cai nos dados embutidos */
+  async function carregarCatalogo() {
+    if (IS_SERVER) {
+      try {
+        const res  = await fetch(API_BASE + "/api/produtos");
+        const data = await res.json();
+        if (!data.ok) throw new Error("API erro");
+        allProducts = data.produtos.map(p => ({
+          ...p,
+          id: `${p.categoria}-${p.sku}`,
+          tamanhos: Array.isArray(p.tamanhos) ? p.tamanhos : JSON.parse(p.tamanhos || "[]")
+        })).filter(p => p.ativo && p.categoria !== "masculino");
+        renderizarProdutos(allProducts);
+        return;
+      } catch(e) {
+        console.warn("API indisponível, usando dados embutidos:", e.message);
+      }
+    }
+    // Fallback: dados embutidos (funciona sem servidor)
+    allProducts = PRODUTOS_FALLBACK.filter(p => p.categoria !== "masculino");
+    renderizarProdutos(allProducts);
+  }
+
+  carregarCatalogo();
+});
+
+/* ===== SPLASH ===== */
+(function() {
+  // Some automaticamente em ~2.6s
+  setTimeout(() => {
+    document.getElementById("splash").classList.add("hide");
+    document.body.style.overflow = "";
+  }, 2600);
+  // Trava scroll durante splash
+  document.body.style.overflow = "hidden";
+})();
+
+</script>
+</body>
+</html>
