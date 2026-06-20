@@ -34,9 +34,11 @@ app.use("/api", rateLimit({
 }));
 
 /* ─── Arquivos estáticos ─── */
-// Painel admin — rota COM e SEM trailing slash
-app.get("/admin", (req, res) => res.redirect("/admin/"));
+// Painel admin — serve direto, sem redirect (evita loop atrás de proxy/Railway)
 app.use("/admin", express.static(path.join(__dirname, "public", "admin")));
+app.get(/^\/admin\/?$/, (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin", "index.html"));
+});
 
 // Frontend do catálogo
 app.use(express.static(path.join(__dirname, "..", "frontend")));
