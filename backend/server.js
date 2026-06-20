@@ -11,6 +11,9 @@ const { getDB }   = require("./db");
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+// Confia no proxy do Railway (corrige X-Forwarded-* e evita loops de redirect)
+app.set("trust proxy", 1);
+
 /* ─── Segurança e middlewares ─── */
 app.use(helmet({
   contentSecurityPolicy: false  // permite carregar Google Fonts e recursos externos
@@ -65,12 +68,12 @@ app.use((req, res) => {
 /* ─── Inicia banco e sobe servidor ─── */
 getDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`\n Catálogo Atelier rodando em http://localhost:${PORT}`);
+    console.log(`\n✅ Catálogo Atelier rodando em http://localhost:${PORT}`);
     console.log(`   → Catálogo:  http://localhost:${PORT}/`);
     console.log(`   → Admin:     http://localhost:${PORT}/admin/`);
     console.log(`   → API:       http://localhost:${PORT}/api/produtos\n`);
   });
 }).catch(err => {
-  console.error(" Erro ao inicializar banco:", err);
+  console.error("❌ Erro ao inicializar banco:", err);
   process.exit(1);
 });
