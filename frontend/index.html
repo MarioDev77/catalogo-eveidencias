@@ -247,7 +247,7 @@
 <section class="section" id="novos">
   <div class="section-head">
     <h2>Novos <em>Modelos</em></h2>
-    <div class="meta">20 peças · Edição recente</div>
+    <div class="meta">35 peças · Edição recente</div>
   </div>
   <div class="grid" id="grid-novos"></div>
 </section>
@@ -665,7 +665,22 @@ document.addEventListener("DOMContentLoaded", () => {
     {id:"feminino-AT-J08", sku:"AT-J08", nome:"Calça Noir Modeladora", descricao:"Jeans escuro com efeito modelador, cintura alta e elastano. Realça curvas com sofisticação.", categoria:"feminino", imagem:"images/produto_08.jpeg", tamanhos:["38","40","42","44","46"], preco:"Consulte valores", ativo:true},
     {id:"feminino-AT-J10", sku:"AT-J10", nome:"Calça Bardot", descricao:"Edição limitada em lavagem média uniforme. Cintura alta com lycra, recortes precisos.", categoria:"feminino", imagem:"images/produto_10.jpeg", tamanhos:["36","38"], preco:"Consulte valores", ativo:true},
     {id:"feminino-AT-J14", sku:"AT-J14", nome:"Calça Indigo Premium", descricao:"Jeans azul escuro com leve desgaste, costura aparente e modelagem skinny ajustada.", categoria:"feminino", imagem:"images/produto_14.jpeg", tamanhos:["36","38","40","46"], preco:"Consulte valores", ativo:true},
-    ...Array.from({length:20},(_,i)=>{const n=String(i+1).padStart(2,'0');return{id:`novos-AT-N${n}`,sku:`AT-N${n}`,nome:`Modelo Novo ${n}`,descricao:"Nova peça da coleção recém-chegada.",categoria:"novos",imagem:`images/novo_${n}.jpeg`,tamanhos:["P","M","G"],preco:"Consulte valores",ativo:true};})
+    ...Array.from({length:20},(_,i)=>{const n=String(i+1).padStart(2,'0');return{id:`novos-AT-N${n}`,sku:`AT-N${n}`,nome:`Modelo Novo ${n}`,descricao:"Nova peça da coleção recém-chegada.",categoria:"novos",imagem:`images/novo_${n}.jpeg`,tamanhos:["P","M","G"],preco:"Consulte valores",ativo:true};}),
+    {id:"novos-AT-N21", sku:"AT-N21", nome:"Vestido Toque de Couro", descricao:"Vestido curto em couro ecológico marrom, gola alta com amarração e barra com recorte vazado em ilhós. Composição com bota over the knee.", categoria:"novos", imagem:"images/novo_21.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N22", sku:"AT-N22", nome:"Vestido Londres", descricao:"Vestido envelope em poliamida acetinada, manga longa ampla e decote drapeado fechado por amarração. Disponível nas cores Preto, Café, Pérola e Marsala.", categoria:"novos", imagem:"images/novo_22.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N23", sku:"AT-N23", nome:"Saia Courino Mozart", descricao:"Saia em courino com caimento reto e bolsos frontais. Disponível em Caramelo, Preto, Cinza e Nude.", categoria:"novos", imagem:"images/novo_23.jpeg", tamanhos:["36","38","40","42"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N24", sku:"AT-N24", nome:"Body Long Horn", descricao:"Body básico de alcinha com estampa de chifre bordada. Disponível em Preto, Branco e Marrom.", categoria:"novos", imagem:"images/novo_24.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N25", sku:"AT-N25", nome:"Vestido Londres Pérola", descricao:"Vestido manga longa em poliamida acetinada com recorte nas costas e silhueta soltinha que afina na cintura.", categoria:"novos", imagem:"images/novo_25.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N26", sku:"AT-N26", nome:"Meia-Calça Fio 40", descricao:"Meia-calça fina em tom preto, ideal para compor looks com bota e saia ou vestido curto.", categoria:"novos", imagem:"images/novo_26.jpeg", tamanhos:["Único"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N27", sku:"AT-N27", nome:"Conjunto Skort Stitch", descricao:"Conjunto top cropped com recorte vazado e skort de costura contrastante. Disponível em Preto e Off White.", categoria:"novos", imagem:"images/novo_27.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N28", sku:"AT-N28", nome:"Top Bandeira Brasil", descricao:"Top em cetim estampado com as cores do Brasil, modelagem versátil que pode ser amarrada de diferentes formas.", categoria:"novos", imagem:"images/novo_28.jpeg", tamanhos:["Único"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N29", sku:"AT-N29", nome:"Blusa Elise Básica", descricao:"Blusa básica de manga curta em malha lisa, gola careca. Disponível em diversas cores: preto, branco, verde, marinho, marrom e rosa.", categoria:"novos", imagem:"images/novo_29.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N30", sku:"AT-N30", nome:"Regata Stripe Azul", descricao:"Regata canelada com acabamento contrastante na gola e cavas. Disponível em Azul Royal e Off White.", categoria:"novos", imagem:"images/novo_30.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N31", sku:"AT-N31", nome:"Vestido Tubinho Amarração", descricao:"Vestido midi em malha canelada com amarração lateral que marca a cintura. Disponível em Marrom, Preto, Marinho e Vinho.", categoria:"novos", imagem:"images/novo_31.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N32", sku:"AT-N32", nome:"Body Poá Mesh", descricao:"Body de manga longa em tule com poá flocado, decote canoa. Disponível em Preto, Marrom e Off White.", categoria:"novos", imagem:"images/novo_32.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N33", sku:"AT-N33", nome:"Polo Listrada Tricot", descricao:"Polo sem manga em tricot listrado com gola e botões frontais. Disponível em Marrom, Marinho, Verde, Lilás e Preto.", categoria:"novos", imagem:"images/novo_33.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N34", sku:"AT-N34", nome:"Vestido Canelado Costas Nuas", descricao:"Vestido midi canelado com recorte nas costas e alças largas. Disponível em Marrom, Off White, Caramelo e Preto.", categoria:"novos", imagem:"images/novo_34.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true},
+    {id:"novos-AT-N35", sku:"AT-N35", nome:"Regata Canelada Argola", descricao:"Regata canelada básica com detalhe de argola dourada na alça. Disponível em Preto, Branco, Marsala, Marinho, Off White e Bordô.", categoria:"novos", imagem:"images/novo_35.jpeg", tamanhos:["P","M","G"], preco:"Consulte valores", ativo:true}
   ];
 
   function renderizarProdutos(lista) {

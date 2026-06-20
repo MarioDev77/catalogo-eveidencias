@@ -103,10 +103,27 @@ function seedProdutos() {
     { sku:"AT-B20", nome:"Brim Khaki Stone",         desc:"Cinza esverdeado em tecido encorpado. Versátil, sóbrio e contemporâneo.",                      img:"produto_20.jpeg", tam:["38","40","42","44"] }
   ];
 
-  const novos = Array.from({length:20},(_,i) => {
-    const n = String(i+1).padStart(2,"0");
-    return { sku:`AT-N${n}`, nome:`Modelo Novo ${n}`, desc:"Nova peça da coleção recém-chegada.", img:`novo_${n}.jpeg`, tam:["P","M","G"] };
-  });
+  const novos = [
+    ...Array.from({length:20},(_,i) => {
+      const n = String(i+1).padStart(2,"0");
+      return { sku:`AT-N${n}`, nome:`Modelo Novo ${n}`, desc:"Nova peça da coleção recém-chegada.", img:`novo_${n}.jpeg`, tam:["P","M","G"] };
+    }),
+    { sku:"AT-N21", nome:"Vestido Toque de Couro",        desc:"Vestido curto em couro ecológico marrom, gola alta com amarração e barra com recorte vazado em ilhós. Composição com bota over the knee.",                  img:"novo_21.jpeg", tam:["P","M","G"] },
+    { sku:"AT-N22", nome:"Vestido Londres",                desc:"Vestido envelope em poliamida acetinada, manga longa ampla e decote drapeado fechado por amarração. Disponível nas cores Preto, Café, Pérola e Marsala.",        img:"novo_22.jpeg", tam:["P","M","G"] },
+    { sku:"AT-N23", nome:"Saia Courino Mozart",            desc:"Saia em courino com caimento reto e bolsos frontais. Disponível em Caramelo, Preto, Cinza e Nude.",                                                              img:"novo_23.jpeg", tam:["36","38","40","42"] },
+    { sku:"AT-N24", nome:"Body Long Horn",                 desc:"Body básico de alcinha com estampa de chifre bordada. Disponível em Preto, Branco e Marrom.",                                                                   img:"novo_24.jpeg", tam:["P","M","G"] },
+    { sku:"AT-N25", nome:"Vestido Londres Pérola",         desc:"Vestido manga longa em poliamida acetinada com recorte nas costas e silhueta soltinha que afina na cintura.",                                                    img:"novo_25.jpeg", tam:["P","M","G"] },
+    { sku:"AT-N26", nome:"Meia-Calça Fio 40",              desc:"Meia-calça fina em tom preto, ideal para compor looks com bota e saia ou vestido curto.",                                                                        img:"novo_26.jpeg", tam:["Único"] },
+    { sku:"AT-N27", nome:"Conjunto Skort Stitch",          desc:"Conjunto top cropped com recorte vazado e skort de costura contrastante. Disponível em Preto e Off White.",                                                       img:"novo_27.jpeg", tam:["P","M","G"] },
+    { sku:"AT-N28", nome:"Top Bandeira Brasil",            desc:"Top em cetim estampado com as cores do Brasil, modelagem versátil que pode ser amarrada de diferentes formas.",                                                  img:"novo_28.jpeg", tam:["Único"] },
+    { sku:"AT-N29", nome:"Blusa Elise Básica",             desc:"Blusa básica de manga curta em malha lisa, gola careca. Disponível em diversas cores: preto, branco, verde, marinho, marrom e rosa.",                            img:"novo_29.jpeg", tam:["P","M","G"] },
+    { sku:"AT-N30", nome:"Regata Stripe Azul",             desc:"Regata canelada com acabamento contrastante na gola e cavas. Disponível em Azul Royal e Off White.",                                                              img:"novo_30.jpeg", tam:["P","M","G"] },
+    { sku:"AT-N31", nome:"Vestido Tubinho Amarração",      desc:"Vestido midi em malha canelada com amarração lateral que marca a cintura. Disponível em Marrom, Preto, Marinho e Vinho.",                                          img:"novo_31.jpeg", tam:["P","M","G"] },
+    { sku:"AT-N32", nome:"Body Poá Mesh",                  desc:"Body de manga longa em tule com poá flocado, decote canoa. Disponível em Preto, Marrom e Off White.",                                                            img:"novo_32.jpeg", tam:["P","M","G"] },
+    { sku:"AT-N33", nome:"Polo Listrada Tricot",           desc:"Polo sem manga em tricot listrado com gola e botões frontais. Disponível em Marrom, Marinho, Verde, Lilás e Preto.",                                               img:"novo_33.jpeg", tam:["P","M","G"] },
+    { sku:"AT-N34", nome:"Vestido Canelado Costas Nuas",   desc:"Vestido midi canelado com recorte nas costas e alças largas. Disponível em Marrom, Off White, Caramelo e Preto.",                                                 img:"novo_34.jpeg", tam:["P","M","G"] },
+    { sku:"AT-N35", nome:"Regata Canelada Argola",         desc:"Regata canelada básica com detalhe de argola dourada na alça. Disponível em Preto, Branco, Marsala, Marinho, Off White e Bordô.",                                  img:"novo_35.jpeg", tam:["P","M","G"] }
+  ];
 
   const inserir = (lista, cat) => {
     const stmt = db.prepare(`
