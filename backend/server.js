@@ -34,8 +34,9 @@ app.use("/api", rateLimit({
 }));
 
 /* ─── Arquivos estáticos ─── */
-// Painel admin — serve direto, sem redirect (evita loop atrás de proxy/Railway)
-app.use("/admin", express.static(path.join(__dirname, "public", "admin")));
+// Painel admin — redirect:false evita o loop que o express.static cria
+// sozinho ao tentar normalizar "/admin" -> "/admin/" atrás do proxy do Railway
+app.use("/admin", express.static(path.join(__dirname, "public", "admin"), { redirect: false }));
 app.get(/^\/admin\/?$/, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin", "index.html"));
 });
@@ -64,12 +65,12 @@ app.use((req, res) => {
 /* ─── Inicia banco e sobe servidor ─── */
 getDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`\n✅ Catálogo Atelier rodando em http://localhost:${PORT}`);
+    console.log(`\n Catálogo Atelier rodando em http://localhost:${PORT}`);
     console.log(`   → Catálogo:  http://localhost:${PORT}/`);
     console.log(`   → Admin:     http://localhost:${PORT}/admin/`);
     console.log(`   → API:       http://localhost:${PORT}/api/produtos\n`);
   });
 }).catch(err => {
-  console.error("❌ Erro ao inicializar banco:", err);
+  console.error(" Erro ao inicializar banco:", err);
   process.exit(1);
 });
