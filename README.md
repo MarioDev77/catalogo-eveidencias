@@ -1,60 +1,85 @@
-# Evidências Modas — Catálogo Atelier
+# Catálogo Evidências Modas — v2.0 (sem SQLite)
 
-## ⚠️ IMPORTANTE: Como iniciar corretamente
+## O que mudou nesta versão
 
-O painel `/admin` **só funciona pelo servidor Node.js** (porta 3000).  
-**NÃO abra os arquivos pelo Live Server do VS Code** (porta 5500) — isso causa o erro 404.
+A versão anterior usava SQLite (`sql.js`) salvo em arquivo dentro do container do
+Railway. O problema: o Railway **não garante disco persistente** entre deploys/restarts
+sem um volume configurado, então o banco era recriado do zero (apagando qualquer
+produto inserido manualmente) sempre que o serviço reiniciava.
 
----
+**Nesta versão, os produtos ficam em `backend/data/produtos.json`**, um arquivo de
+texto simples que é versionado no Git junto com o resto do código. Isso significa:
 
-## 🚀 Como iniciar o servidor
+- Os 35 produtos (20 originais + 15 novos) já vêm prontos desde o primeiro deploy.
+- Qualquer alteração feita pelo painel admin (criar/editar/excluir produto) é
+  salva nesse arquivo em tempo real.
+- **Atenção:** se o Railway recriar o container sem volume persistente, alterações
+  feitas pelo admin *depois* do último `git push` podem se perder no próximo deploy
+  (mesma limitação de antes). O que resolve isso de vez é commitar o `produtos.json`
+  de volta no repositório depois de usar o admin, ou — melhor ainda — migrar para um
+  banco gerenciado (ex: Postgres do próprio Railway) caso o catálogo for crescer muito
+  ou tiver edições frequentes pelo admin em produção.
 
-```bash
-# 1. Entre na pasta backend
-cd backend
-
-# 2. Instale as dependências (só precisa fazer uma vez)
-npm install
-
-# 3. Inicie o servidor
-node server.js
-```
-
-Após iniciar, acesse:
-
-| Página      | URL                              |
-|-------------|----------------------------------|
-| Catálogo    | http://localhost:3000/           |
-| **Admin**   | **http://localhost:3000/admin/** |
-| API         | http://localhost:3000/api/produtos |
-
----
-
-## 📁 Estrutura do projeto
+## Estrutura
 
 ```
-/
+catalogo-evidencias/
 ├── backend/
-│   ├── server.js          ← servidor Express (porta 3000)
-│   ├── .env               ← configurações (PORT, etc.)
-│   ├── db/index.js        ← banco SQLite (sql.js)
+│   ├── data/
+│   │   ├── produtos.json       ← os 35 produtos (fonte da verdade)
+│   │   ├── contatos.json       ← interesses registrados pelo catálogo
+│   │   └── visualizacoes.json  ← contagem de views por produto
+│   ├── db/
+│   │   └── index.js            ← funções de ler/escrever o JSON
 │   ├── routes/
 │   │   ├── produtos.js
 │   │   ├── contatos.js
 │   │   └── stats.js
-│   └── public/
-│       └── admin/
-│           └── index.html ← painel administrativo
+│   ├── public/admin/           ← painel administrativo
+│   ├── server.js
+│   └── package.json
 └── frontend/
-    ├── index.html         ← catálogo público
-    └── images/            ← fotos dos produtos
+    ├── index.html              ← catálogo (mesmo visual de antes)
+    └── images/                 ← todas as fotos dos produtos
 ```
 
----
+## Deploy
 
-## ✅ Correções aplicadas
+### Railway (backend)
+1. Crie um novo serviço a partir deste repositório.
+2. **Root Directory: deixe vazio (raiz do repo)** — não use `backend` como root,
+   porque o `server.js` precisa encontrar a pasta `frontend` um nível acima dele.
+   (O código agora detecta automaticamente se a pasta frontend existe ou não, então
+   mesmo que você configure errado, o site não vai mais derrubar com erro 500 —
+   mas vai servir só a API, sem o catálogo visual.)
+3. Start Command: `cd backend && npm install && node server.js` — ou configure
+   Root Directory como a raiz e Build/Start normalmente, com `npm install` rodando
+   dentro de `backend`.
+4. Variáveis de ambiente: nenhuma obrigatória. Opcional: `CORS_ORIGIN` para
+   restringir o domínio que pode chamar a API.
 
-- Adicionado redirecionamento `/admin` → `/admin/` no servidor  
-- `contentSecurityPolicy` desativado para permitir Google Fonts  
-- README com instruções claras de uso
+### Vercel (frontend)
+1. Root Directory: `frontend`
+2. Sem build step necessário (é HTML estático).
+3. O arquivo `frontend/index.html` já aponta para a URL do Railway em `API_BASE`
+   (linha ~356). Atualize esse valor se o domínio do Railway mudar.
 
+## Testando localmente
+
+```bash
+cd backend
+npm install
+node server.js
+```
+
+Abra `http://localhost:3000` no navegador — o catálogo completo, incluindo as 35
+peças, deve aparecer imediatamente.
+
+## Adicionando produtos no futuro
+
+Duas formas:
+
+1. **Pelo painel admin** (`/admin/`) — mais rápido, mas lembre de fazer backup do
+   `produtos.json` (ou commit) depois de usar, caso o Railway recrie o container.
+2. **Editando `backend/data/produtos.json` direto e fazendo commit** — mais seguro
+   a longo prazo, porque garante que os dados sempre vêm junto com o código.

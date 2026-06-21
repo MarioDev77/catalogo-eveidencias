@@ -1,0 +1,543 @@
+[
+  {
+    "id": 1,
+    "sku": "AT-001",
+    "nome": "Conjunto Soraia",
+    "descricao": "Conjunto blazer e shorts em alfaiataria leve, cor chocolate. Caimento estruturado, fivela metálica e modelagem que valoriza a silhueta.",
+    "categoria": "feminino",
+    "imagem": "images/produto_01.png",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 2,
+    "sku": "AT-J05",
+    "nome": "Calça Lumière",
+    "descricao": "Calça jeans cintura alta em lavagem clara, modelagem skinny com lycra para conforto e sustentação.",
+    "categoria": "feminino",
+    "imagem": "images/produto_05.jpeg",
+    "tamanhos": [
+      "36",
+      "38",
+      "40",
+      "44",
+      "46"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 3,
+    "sku": "AT-J08",
+    "nome": "Calça Noir Modeladora",
+    "descricao": "Jeans escuro com efeito modelador, cintura alta e elastano. Realça curvas com sofisticação.",
+    "categoria": "feminino",
+    "imagem": "images/produto_08.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44",
+      "46"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 4,
+    "sku": "AT-J10",
+    "nome": "Calça Bardot",
+    "descricao": "Edição limitada em lavagem média uniforme. Cintura alta com lycra, recortes precisos.",
+    "categoria": "feminino",
+    "imagem": "images/produto_10.jpeg",
+    "tamanhos": [
+      "36",
+      "38"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 5,
+    "sku": "AT-J14",
+    "nome": "Calça Indigo Premium",
+    "descricao": "Jeans azul escuro com leve desgaste, costura aparente e modelagem skinny ajustada.",
+    "categoria": "feminino",
+    "imagem": "images/produto_14.jpeg",
+    "tamanhos": [
+      "36",
+      "38",
+      "40",
+      "46"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 6,
+    "sku": "AT-M03",
+    "nome": "Jeans Marlon Azul Médio",
+    "descricao": "Calça jeans com lycra em lavagem média uniforme. Modelagem skinny, conforto e sofisticação.",
+    "categoria": "masculino",
+    "imagem": "images/produto_03.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 7,
+    "sku": "AT-M02",
+    "nome": "Jeans Graphite",
+    "descricao": "Jeans cinza grafite com leve estonado. Lycra para mobilidade total e caimento moderno.",
+    "categoria": "masculino",
+    "imagem": "images/produto_02.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 8,
+    "sku": "AT-M04",
+    "nome": "Jeans Indigo Used",
+    "descricao": "Lavagem indigo profundo com leve desgaste. Bolsos clássicos e modelagem slim.",
+    "categoria": "masculino",
+    "imagem": "images/produto_04.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 9,
+    "sku": "AT-M06",
+    "nome": "Jeans Navy Essencial",
+    "descricao": "Tom azul marinho profundo, tecido encorpado com lycra. Versatilidade do casual ao social.",
+    "categoria": "masculino",
+    "imagem": "images/produto_06.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 10,
+    "sku": "AT-M07",
+    "nome": "Jeans Royal Blue",
+    "descricao": "Azul royal vibrante com toque acetinado. Modelagem slim para um visual contemporâneo.",
+    "categoria": "masculino",
+    "imagem": "images/produto_07.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 11,
+    "sku": "AT-M09",
+    "nome": "Jeans Classique",
+    "descricao": "Lavagem média atemporal, cinco bolsos. Peça-curinga que combina com tudo.",
+    "categoria": "masculino",
+    "imagem": "images/produto_09.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 12,
+    "sku": "AT-B11",
+    "nome": "Brim Sand",
+    "descricao": "Calça em brim bege areia com lycra. Modelagem slim, ideal para looks descontraídos.",
+    "categoria": "masculino",
+    "imagem": "images/produto_11.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 13,
+    "sku": "AT-B12",
+    "nome": "Brim Espresso",
+    "descricao": "Marrom escuro encorpado com elastano. Combinação refinada com camisas claras.",
+    "categoria": "masculino",
+    "imagem": "images/produto_12.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 14,
+    "sku": "AT-B13",
+    "nome": "Brim Terracotta",
+    "descricao": "Tom laranja telha exclusivo. Brim com lycra para conforto e modelagem ajustada.",
+    "categoria": "masculino",
+    "imagem": "images/produto_13.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 15,
+    "sku": "AT-B15",
+    "nome": "Brim Blanc",
+    "descricao": "Branca off-white em brim premium. Sofisticada para o dia e elegante para a noite.",
+    "categoria": "masculino",
+    "imagem": "images/produto_15.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 16,
+    "sku": "AT-B16",
+    "nome": "Brim Noir",
+    "descricao": "Preto absoluto, modelagem slim com lycra. A base perfeita para qualquer composição.",
+    "categoria": "masculino",
+    "imagem": "images/produto_16.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 17,
+    "sku": "AT-B17",
+    "nome": "Brim Marine",
+    "descricao": "Azul marinho com leve elasticidade. Caimento limpo e bolsos discretos.",
+    "categoria": "masculino",
+    "imagem": "images/produto_17.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 18,
+    "sku": "AT-B18",
+    "nome": "Brim Bordeaux",
+    "descricao": "Vinho profundo com brilho sutil. Modelagem slim e tecido com excelente memória.",
+    "categoria": "masculino",
+    "imagem": "images/produto_18.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 19,
+    "sku": "AT-B19",
+    "nome": "Brim Caramelo",
+    "descricao": "Tom caramelo quente em brim com lycra. Toque sofisticado para o guarda-roupa masculino.",
+    "categoria": "masculino",
+    "imagem": "images/produto_19.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 20,
+    "sku": "AT-B20",
+    "nome": "Brim Khaki Stone",
+    "descricao": "Cinza esverdeado em tecido encorpado. Versátil, sóbrio e contemporâneo.",
+    "categoria": "masculino",
+    "imagem": "images/produto_20.jpeg",
+    "tamanhos": [
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 21,
+    "sku": "AT-N21",
+    "nome": "Vestido Toque de Couro",
+    "descricao": "Vestido curto em couro ecológico marrom, gola alta com amarração e barra com recorte vazado em ilhós. Composição com bota over the knee.",
+    "categoria": "novos",
+    "imagem": "images/novo_21.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 22,
+    "sku": "AT-N22",
+    "nome": "Vestido Londres",
+    "descricao": "Vestido envelope em poliamida acetinada, manga longa ampla e decote drapeado fechado por amarração. Disponível nas cores Preto, Café, Pérola e Marsala.",
+    "categoria": "novos",
+    "imagem": "images/novo_22.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 23,
+    "sku": "AT-N23",
+    "nome": "Saia Courino Mozart",
+    "descricao": "Saia em courino com caimento reto e bolsos frontais. Disponível em Caramelo, Preto, Cinza e Nude.",
+    "categoria": "novos",
+    "imagem": "images/novo_23.jpeg",
+    "tamanhos": [
+      "36",
+      "38",
+      "40",
+      "42"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 24,
+    "sku": "AT-N24",
+    "nome": "Body Long Horn",
+    "descricao": "Body básico de alcinha com estampa de chifre bordada. Disponível em Preto, Branco e Marrom.",
+    "categoria": "novos",
+    "imagem": "images/novo_24.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 25,
+    "sku": "AT-N25",
+    "nome": "Vestido Londres Pérola",
+    "descricao": "Vestido manga longa em poliamida acetinada com recorte nas costas e silhueta soltinha que afina na cintura.",
+    "categoria": "novos",
+    "imagem": "images/novo_25.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 26,
+    "sku": "AT-N26",
+    "nome": "Meia-Calça Fio 40",
+    "descricao": "Meia-calça fina em tom preto, ideal para compor looks com bota e saia ou vestido curto.",
+    "categoria": "novos",
+    "imagem": "images/novo_26.jpeg",
+    "tamanhos": [
+      "Único"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 27,
+    "sku": "AT-N27",
+    "nome": "Conjunto Skort Stitch",
+    "descricao": "Conjunto top cropped com recorte vazado e skort de costura contrastante. Disponível em Preto e Off White.",
+    "categoria": "novos",
+    "imagem": "images/novo_27.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 28,
+    "sku": "AT-N28",
+    "nome": "Top Bandeira Brasil",
+    "descricao": "Top em cetim estampado com as cores do Brasil, modelagem versátil que pode ser amarrada de diferentes formas.",
+    "categoria": "novos",
+    "imagem": "images/novo_28.jpeg",
+    "tamanhos": [
+      "Único"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 29,
+    "sku": "AT-N29",
+    "nome": "Blusa Elise Básica",
+    "descricao": "Blusa básica de manga curta em malha lisa, gola careca. Disponível em diversas cores: preto, branco, verde, marinho, marrom e rosa.",
+    "categoria": "novos",
+    "imagem": "images/novo_29.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 30,
+    "sku": "AT-N30",
+    "nome": "Regata Stripe Azul",
+    "descricao": "Regata canelada com acabamento contrastante na gola e cavas. Disponível em Azul Royal e Off White.",
+    "categoria": "novos",
+    "imagem": "images/novo_30.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 31,
+    "sku": "AT-N31",
+    "nome": "Vestido Tubinho Amarração",
+    "descricao": "Vestido midi em malha canelada com amarração lateral que marca a cintura. Disponível em Marrom, Preto, Marinho e Vinho.",
+    "categoria": "novos",
+    "imagem": "images/novo_31.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 32,
+    "sku": "AT-N32",
+    "nome": "Body Poá Mesh",
+    "descricao": "Body de manga longa em tule com poá flocado, decote canoa. Disponível em Preto, Marrom e Off White.",
+    "categoria": "novos",
+    "imagem": "images/novo_32.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 33,
+    "sku": "AT-N33",
+    "nome": "Polo Listrada Tricot",
+    "descricao": "Polo sem manga em tricot listrado com gola e botões frontais. Disponível em Marrom, Marinho, Verde, Lilás e Preto.",
+    "categoria": "novos",
+    "imagem": "images/novo_33.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 34,
+    "sku": "AT-N34",
+    "nome": "Vestido Canelado Costas Nuas",
+    "descricao": "Vestido midi canelado com recorte nas costas e alças largas. Disponível em Marrom, Off White, Caramelo e Preto.",
+    "categoria": "novos",
+    "imagem": "images/novo_34.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  },
+  {
+    "id": 35,
+    "sku": "AT-N35",
+    "nome": "Regata Canelada Argola",
+    "descricao": "Regata canelada básica com detalhe de argola dourada na alça. Disponível em Preto, Branco, Marsala, Marinho, Off White e Bordô.",
+    "categoria": "novos",
+    "imagem": "images/novo_35.jpeg",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "preco": "Consulte",
+    "ativo": true
+  }
+]

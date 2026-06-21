@@ -1,7 +1,7 @@
 {
-  "name": "catalogo-atelier-backend",
-  "version": "1.0.0",
-  "description": "Backend do Catálogo Atelier Coleção",
+  "name": "catalogo-evidencias-backend",
+  "version": "2.0.0",
+  "description": "Backend do Catálogo Evidências Modas (sem SQLite, dados em JSON versionado no Git)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -13,8 +13,7 @@
     "express": "^4.19.2",
     "express-rate-limit": "^7.3.1",
     "helmet": "^7.1.0",
-    "morgan": "^1.10.0",
-    "sql.js": "^1.11.0"
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
