@@ -86,6 +86,11 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
 .field textarea{resize:vertical;min-height:80px}
+.upload-box{border:1.5px dashed var(--line);border-radius:var(--r);background:var(--bg3);min-height:140px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s,background .2s;overflow:hidden;position:relative}
+.upload-box:hover{border-color:var(--gold);background:rgba(191,155,48,.05)}
+.upload-box img{width:100%;height:160px;object-fit:contain;background:#fff}
+.upload-box #upload-placeholder{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--dim);font-size:11px;letter-spacing:.1em;padding:24px}
+.upload-box #upload-placeholder svg{fill:var(--dim)}
 
 /* MODAL EDIT */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
@@ -300,6 +305,10 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
             <option value="feminino">Feminino</option>
             <option value="novos">Novos Modelos</option>
           </select>
+          <button class="btn btn-gold" onclick="abrirModalNovoProduto()">
+            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            Nova Peça
+          </button>
         </div>
       </div>
 
@@ -366,7 +375,7 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
   </main>
 </div>
 
-<!-- MODAL EDITAR PRODUTO -->
+<!-- MODAL EDITAR/CRIAR PRODUTO -->
 <div class="overlay" id="modal-overlay">
   <div class="modal">
     <div class="modal-head">
@@ -374,6 +383,10 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
       <button class="close-btn" onclick="fecharModal()">&#x2715;</button>
     </div>
     <div class="form-grid">
+      <div class="field" id="campo-sku" style="grid-column:1/-1">
+        <label>SKU (código único)</label>
+        <input type="text" id="edit-sku-novo" placeholder="Ex: AT-N36">
+      </div>
       <div class="field" style="grid-column:1/-1">
         <label>Nome</label>
         <input type="text" id="edit-nome">
@@ -381,6 +394,14 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
       <div class="field" style="grid-column:1/-1">
         <label>Descrição</label>
         <textarea id="edit-desc" rows="3"></textarea>
+      </div>
+      <div class="field" id="campo-categoria">
+        <label>Categoria</label>
+        <select id="edit-categoria">
+          <option value="novos">✨ Novos Modelos</option>
+          <option value="feminino">Feminino</option>
+          <option value="masculino">Masculino</option>
+        </select>
       </div>
       <div class="field">
         <label>Tamanhos (separados por vírgula)</label>
@@ -397,6 +418,18 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
           <option value="0">❌ Inativo</option>
         </select>
       </div>
+      <div class="field" style="grid-column:1/-1">
+        <label>Imagem da peça</label>
+        <div class="upload-box" id="upload-box" onclick="document.getElementById('edit-imagem-arquivo').click()">
+          <img id="upload-preview" style="display:none">
+          <div id="upload-placeholder">
+            <svg viewBox="0 0 24 24" width="28" height="28"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            <span>Clique para escolher uma foto</span>
+          </div>
+        </div>
+        <input type="file" id="edit-imagem-arquivo" accept="image/*" style="display:none" onchange="previewImagem(event)">
+        <input type="hidden" id="edit-imagem">
+      </div>
       <div class="field">
         <label>Destaque</label>
         <select id="edit-destaque">
@@ -408,7 +441,7 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
     <input type="hidden" id="edit-sku">
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)">
       <button class="btn btn-ghost" onclick="fecharModal()">Cancelar</button>
-      <button class="btn btn-gold" onclick="salvarProduto()">
+      <button class="btn btn-gold" id="btn-salvar-produto" onclick="salvarProduto()">
         <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
         Salvar
       </button>
@@ -446,9 +479,20 @@ function toast(msg, erro = false) {
   setTimeout(() => t.classList.remove("show"), 2800);
 }
 
-/* ─── Fetch helper ─── */
+/* ─── Fetch helper (envia token JWT e trata sessão expirada) ─── */
 async function api(path, opts={}) {
-  const r = await fetch(API + path, { headers:{"Content-Type":"application/json"}, ...opts });
+  const token = sessionStorage.getItem("_adm_ev_token");
+  const headers = { "Content-Type":"application/json", ...(opts.headers||{}) };
+  if (token) headers["Authorization"] = "Bearer " + token;
+
+  const r = await fetch(API + path, { ...opts, headers });
+
+  if (r.status === 401) {
+    sessionStorage.removeItem("_adm_ev_token");
+    toast("Sessão expirada. Faça login novamente.", true);
+    setTimeout(() => location.reload(), 1200);
+    return { ok:false, erro:"Sessão expirada" };
+  }
   return r.json();
 }
 
@@ -527,8 +571,11 @@ function filtrarProdutos() {
   renderizarProdutos(lista);
 }
 
-/* ─── Modal editar ─── */
+/* ─── Modal editar/criar ─── */
+let modoModal = "editar"; // "editar" | "criar"
+
 function editarProduto(p) {
+  modoModal = "editar";
   document.getElementById("edit-sku").value      = p.sku;
   document.getElementById("edit-nome").value     = p.nome;
   document.getElementById("edit-desc").value     = p.descricao || "";
@@ -536,8 +583,89 @@ function editarProduto(p) {
   document.getElementById("edit-preco").value    = p.preco || "";
   document.getElementById("edit-ativo").value    = p.ativo ? "1" : "0";
   document.getElementById("edit-destaque").value = p.destaque ? "1" : "0";
+  document.getElementById("edit-categoria").value = p.categoria || "novos";
+  document.getElementById("edit-imagem").value   = p.imagem || "";
+  document.getElementById("edit-sku-novo").value = p.sku;
+
+  // No modo edição o SKU não pode mudar (é a chave do produto)
+  document.getElementById("edit-sku-novo").disabled = true;
+  document.getElementById("campo-categoria").style.display = "";
+
+  mostrarPreviewImagem(p.imagem);
+
   document.getElementById("modal-title").textContent = `Editar — ${p.nome}`;
+  document.getElementById("btn-salvar-produto").innerHTML = "Salvar alterações";
   document.getElementById("modal-overlay").classList.add("open");
+}
+
+function abrirModalNovoProduto() {
+  modoModal = "criar";
+  document.getElementById("edit-sku").value      = "";
+  document.getElementById("edit-sku-novo").value = "";
+  document.getElementById("edit-sku-novo").disabled = false;
+  document.getElementById("edit-nome").value     = "";
+  document.getElementById("edit-desc").value     = "";
+  document.getElementById("edit-tam").value      = "P, M, G";
+  document.getElementById("edit-preco").value    = "Consulte";
+  document.getElementById("edit-ativo").value    = "1";
+  document.getElementById("edit-destaque").value = "0";
+  document.getElementById("edit-categoria").value = "novos";
+  document.getElementById("edit-imagem").value   = "";
+
+  mostrarPreviewImagem(null);
+
+  document.getElementById("modal-title").textContent = "Nova Peça — Novos Modelos";
+  document.getElementById("btn-salvar-produto").innerHTML = "Adicionar peça";
+  document.getElementById("modal-overlay").classList.add("open");
+}
+
+function mostrarPreviewImagem(caminho) {
+  const img = document.getElementById("upload-preview");
+  const placeholder = document.getElementById("upload-placeholder");
+  if (caminho) {
+    img.src = "/" + caminho;
+    img.style.display = "block";
+    placeholder.style.display = "none";
+  } else {
+    img.style.display = "none";
+    placeholder.style.display = "flex";
+  }
+}
+
+async function previewImagem(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // Preview local imediato (antes mesmo do upload terminar)
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById("upload-preview").src = e.target.result;
+    document.getElementById("upload-preview").style.display = "block";
+    document.getElementById("upload-placeholder").style.display = "none";
+  };
+  reader.readAsDataURL(file);
+
+  // Envia para o backend, que salva o arquivo e devolve o caminho final
+  const formData = new FormData();
+  formData.append("imagem", file);
+  const token = sessionStorage.getItem("_adm_ev_token");
+
+  try {
+    const r = await fetch(API + "/api/upload", {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + token },
+      body: formData
+    });
+    const data = await r.json();
+    if (data.ok) {
+      document.getElementById("edit-imagem").value = data.caminho;
+      toast("Imagem enviada!");
+    } else {
+      toast(data.erro || "Erro ao enviar imagem", true);
+    }
+  } catch {
+    toast("Erro de conexão ao enviar imagem", true);
+  }
 }
 
 function fecharModal() {
@@ -545,22 +673,37 @@ function fecharModal() {
 }
 
 async function salvarProduto() {
-  const sku = document.getElementById("edit-sku").value;
+  const nome = document.getElementById("edit-nome").value.trim();
+  if (!nome) { toast("Informe o nome da peça", true); return; }
+
   const body = {
-    nome:      document.getElementById("edit-nome").value,
+    nome,
     descricao: document.getElementById("edit-desc").value,
+    categoria: document.getElementById("edit-categoria").value,
+    imagem:    document.getElementById("edit-imagem").value,
     tamanhos:  document.getElementById("edit-tam").value.split(",").map(s=>s.trim()).filter(Boolean),
     preco:     document.getElementById("edit-preco").value,
     ativo:     document.getElementById("edit-ativo").value === "1",
     destaque:  document.getElementById("edit-destaque").value === "1"
   };
-  const data = await api(`/api/produtos/${sku}`, { method:"PUT", body: JSON.stringify(body) });
+
+  let data;
+  if (modoModal === "criar") {
+    const sku = document.getElementById("edit-sku-novo").value.trim();
+    if (!sku) { toast("Informe o SKU da peça", true); return; }
+    body.sku = sku;
+    data = await api("/api/produtos", { method:"POST", body: JSON.stringify(body) });
+  } else {
+    const sku = document.getElementById("edit-sku").value;
+    data = await api(`/api/produtos/${sku}`, { method:"PUT", body: JSON.stringify(body) });
+  }
+
   if (data.ok) {
-    toast("Produto atualizado!");
+    toast(modoModal === "criar" ? "Peça adicionada aos Novos Modelos!" : "Produto atualizado!");
     fecharModal();
     carregarProdutos();
   } else {
-    toast("Erro ao salvar", true);
+    toast(data.erro || "Erro ao salvar", true);
   }
 }
 
@@ -623,70 +766,48 @@ document.getElementById("modal-overlay").addEventListener("click", e => {
   if (e.target === document.getElementById("modal-overlay")) fecharModal();
 });
 
-/* ─── Init ─── */
-carregarDashboard();
+/* Nota: o dashboard só é carregado depois que a autenticação confirma a
+   sessão (ver bloco de AUTENTICAÇÃO ADM abaixo) — chamar aqui faria uma
+   requisição autenticada antes mesmo do login acontecer. */
 
-/* ─── AUTENTICAÇÃO ADM ─── */
+/* ─── AUTENTICAÇÃO ADM (login real via API + JWT) ─── */
 (function() {
-  // Hash SHA-256 da senha + username (segredo nunca exposto em texto claro)
-  const ADM_USER_HASH   = "d98c3fd3dd83a33665a34213a2dbfda9fddea9a8716ce140a61e17fade095668";
-  const ADM_PASS_HASH   = "2949cd9e5e8d97d5805af480cfcafa7afce3a4d0c619fbb49539a809157ba50c";
-  const SESSION_KEY     = "_adm_ev_sess";
-  const SESSION_EXPIRE  = 8 * 60 * 60 * 1000; // 8 horas em ms
-  const MAX_ATTEMPTS    = 3;
-  const LOCK_TIME       = 30 * 60 * 1000; // 30 minutos bloqueado
-  const ATTEMPTS_KEY    = "_adm_ev_att";
-
-  async function sha256(str) {
-    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-  }
-
-  function getAttempts() {
-    try { return JSON.parse(sessionStorage.getItem(ATTEMPTS_KEY)) || {count:0,lockedUntil:0}; } catch{return {count:0,lockedUntil:0};}
-  }
-  function setAttempts(a) { sessionStorage.setItem(ATTEMPTS_KEY, JSON.stringify(a)); }
+  const TOKEN_KEY = "_adm_ev_token";
 
   function isSessionValid() {
+    const token = sessionStorage.getItem(TOKEN_KEY);
+    if (!token) return false;
     try {
-      const s = JSON.parse(sessionStorage.getItem(SESSION_KEY));
-      if (!s || !s.token || !s.exp) return false;
-      if (Date.now() > s.exp) { sessionStorage.removeItem(SESSION_KEY); return false; }
-      return true;
-    } catch { return false; }
-  }
-
-  function criarSessao() {
-    const token = crypto.randomUUID();
-    const exp   = Date.now() + SESSION_EXPIRE;
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify({token, exp}));
-    // Renova a cada 30min enquanto ativo
-    setInterval(() => {
-      const s = JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null");
-      if (s && s.token === token) {
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify({token, exp: Date.now()+SESSION_EXPIRE}));
+      // Decodifica o payload do JWT só para checar expiração local
+      // (a verdadeira validação de assinatura é sempre feita no backend).
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      if (payload.exp && Date.now() / 1000 > payload.exp) {
+        sessionStorage.removeItem(TOKEN_KEY);
+        return false;
       }
-    }, 30*60*1000);
+      return true;
+    } catch {
+      sessionStorage.removeItem(TOKEN_KEY);
+      return false;
+    }
   }
 
   function encerrarSessao() {
-    sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
     location.reload();
   }
-
-  // Expõe logout globalmente
   window.admLogout = encerrarSessao;
 
   // Verifica sessão ao carregar
   if (isSessionValid()) {
     document.getElementById("login-screen").classList.add("hidden");
+    carregarDashboard();
     return;
   }
 
   // Bloqueia o painel enquanto não autenticado
   document.getElementById("login-screen").classList.remove("hidden");
 
-  // Foco no campo usuário
   window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("adm-user").focus();
     document.getElementById("adm-pass").addEventListener("keydown", e => {
@@ -695,37 +816,16 @@ carregarDashboard();
     document.getElementById("adm-user").addEventListener("keydown", e => {
       if (e.key === "Enter") document.getElementById("adm-pass").focus();
     });
-    atualizarUI();
   });
-
-  function atualizarUI() {
-    const a = getAttempts();
-    const agora = Date.now();
-    const btn = document.getElementById("adm-login-btn");
-    const att = document.getElementById("adm-attempts");
-    if (a.lockedUntil > agora) {
-      const min = Math.ceil((a.lockedUntil - agora)/60000);
-      att.innerHTML = `🔒 Bloqueado por ${min} min`;
-      btn.disabled = true;
-      setTimeout(atualizarUI, 10000);
-    } else {
-      btn.disabled = false;
-      if (a.count > 0) att.textContent = `Tentativas restantes: ${MAX_ATTEMPTS - a.count}`;
-    }
-  }
 
   window.admFazerLogin = async function() {
     const btn  = document.getElementById("adm-login-btn");
     const err  = document.getElementById("adm-err");
     const user = document.getElementById("adm-user").value.trim();
     const pass = document.getElementById("adm-pass").value;
-    const a    = getAttempts();
-    const agora = Date.now();
 
-    // Bloqueado?
-    if (a.lockedUntil > agora) {
-      const min = Math.ceil((a.lockedUntil - agora)/60000);
-      err.textContent = `Muitas tentativas. Aguarde ${min} minuto(s).`;
+    if (!user || !pass) {
+      err.textContent = "Informe usuário e senha.";
       return;
     }
 
@@ -733,34 +833,29 @@ carregarDashboard();
     btn.textContent = "Verificando…";
     err.textContent = "";
 
-    // Delay artificial (anti-brute-force timing)
-    await new Promise(r => setTimeout(r, 600 + Math.random()*400));
+    try {
+      const r = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuario: user, senha: pass })
+      });
+      const data = await r.json();
 
-    const userHash = await sha256(user.toLowerCase());
-    const passHash = await sha256(pass);
-
-    if (userHash === ADM_USER_HASH && passHash === ADM_PASS_HASH) {
-      setAttempts({count:0,lockedUntil:0});
-      criarSessao();
-      document.getElementById("adm-pass").value = "";
-      document.getElementById("login-screen").classList.add("hidden");
-      btn.textContent = "Entrar";
-      btn.disabled = false;
-    } else {
-      a.count++;
-      if (a.count >= MAX_ATTEMPTS) {
-        a.lockedUntil = agora + LOCK_TIME;
-        a.count = MAX_ATTEMPTS;
-        err.textContent = "Conta bloqueada por 15 minutos.";
+      if (data.ok && data.token) {
+        sessionStorage.setItem(TOKEN_KEY, data.token);
+        document.getElementById("adm-pass").value = "";
+        document.getElementById("login-screen").classList.add("hidden");
+        carregarDashboard();
       } else {
-        err.textContent = "Usuário ou senha incorretos.";
+        err.textContent = data.erro || "Usuário ou senha incorretos.";
+        document.getElementById("adm-pass").value = "";
       }
-      setAttempts(a);
-      atualizarUI();
-      document.getElementById("adm-pass").value = "";
-      btn.textContent = "Entrar";
-      btn.disabled = false;
+    } catch {
+      err.textContent = "Erro de conexão. Tente novamente.";
     }
+
+    btn.textContent = "Entrar";
+    btn.disabled = false;
   };
 })();
 

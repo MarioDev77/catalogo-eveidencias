@@ -48,7 +48,7 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 app.use(morgan("dev"));
 
 // Rate limit na API
@@ -58,6 +58,17 @@ app.use("/api", rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { ok: false, erro: "Muitas requisições. Tente novamente em 1 minuto." }
+}));
+
+// Rate limit mais estrito específico para tentativas de login (além do
+// bloqueio progressivo por IP feito no loginGuard) — barra automação rápida
+// de tentativas antes mesmo de chegar na lógica de usuário/senha.
+app.use("/api/auth/login", rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { ok: false, erro: "Muitas tentativas de login. Aguarde um minuto." }
 }));
 
 /* ─── Arquivos estáticos ─── */
@@ -73,9 +84,11 @@ if (FRONTEND_PATH) {
 }
 
 /* ─── Rotas da API ─── */
+app.use("/api/auth", require("./routes/auth"));
 app.use("/api/produtos", require("./routes/produtos"));
 app.use("/api/contatos", require("./routes/contatos"));
 app.use("/api/stats",    require("./routes/stats"));
+app.use("/api/upload",   require("./routes/upload"));
 
 // Health check
 app.get("/api/health", (req, res) => {
