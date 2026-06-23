@@ -1,4 +1,25 @@
+# Dependências
 node_modules/
+backend/node_modules/
+
+# Variáveis de ambiente (NUNCA versionar — contém segredos)
 .env
-.DS_Store
+.env.local
+backend/.env
+backend/.env.local
+
+# Logs
+*.log
 npm-debug.log*
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+
+# Build/cache
+.cache/
+dist/
