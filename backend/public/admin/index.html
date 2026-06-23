@@ -560,7 +560,7 @@ function renderizarProdutos(lista) {
     tbody.innerHTML = `<tr><td colspan="7"><div class="empty">Nenhum produto encontrado</div></td></tr>`;
     return;
   }
-  tbody.innerHTML = lista.map(p => `
+  tbody.innerHTML = lista.map((p, idx) => `
     <tr>
       <td><img class="thumb" src="/${p.imagem}" alt="" onerror="this.style.display='none'"></td>
       <td style="font-weight:500">${esc(p.nome)}</td>
@@ -569,9 +569,10 @@ function renderizarProdutos(lista) {
       <td style="font-size:12px;color:var(--dim)">${esc((p.tamanhos||[]).join(" · "))}</td>
       <td><span class="badge ${p.ativo?'ativo':'inativo'}">${p.ativo?'Ativo':'Inativo'}</span></td>
       <td>
-        <button class="btn btn-ghost btn-sm" onclick="editarProduto(${esc(JSON.stringify(p))})">Editar</button>
+        <button class="btn btn-ghost btn-sm" onclick="editarProdutoIdx(${idx})">Editar</button>
       </td>
     </tr>`).join("");
+  window._produtosRenderizados = lista;
 }
 
 function filtrarProdutos() {
@@ -586,6 +587,11 @@ function filtrarProdutos() {
 
 /* ─── Modal editar/criar ─── */
 let modoModal = "editar"; // "editar" | "criar"
+
+function editarProdutoIdx(idx) {
+  const p = (window._produtosRenderizados || [])[idx];
+  if (p) editarProduto(p);
+}
 
 function editarProduto(p) {
   modoModal = "editar";
