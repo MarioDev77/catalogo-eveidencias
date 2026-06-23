@@ -458,7 +458,7 @@ const API = "";  // mesmo host
    Dados vindos de fora (nome/telefone/mensagem de contato, enviados pelo
    formulário público do catálogo sem login) NUNCA devem ser inseridos via
    innerHTML sem passar por aqui. Sem isso, alguém poderia mandar um nome
-   como "<script>...</script>" pelo formulário de contato e esse código
+   contendo uma tag de script pelo formulário de contato e esse código
    executaria dentro da sessão do admin quando a lista de contatos fosse
    aberta — um XSS armazenado capaz de roubar o token de admin. */
 function esc(valor) {
