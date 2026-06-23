@@ -43,8 +43,18 @@ app.use(helmet({
   contentSecurityPolicy: false  // permite carregar Google Fonts e recursos externos
 }));
 
+// CORS_ORIGIN aceita uma origem única, várias separadas por vírgula, ou "*".
+// Em produção, prefira sempre listar a(s) URL(s) reais do frontend em vez de "*" —
+// "*" permite que qualquer site na internet chame esta API diretamente.
+const corsOriginEnv = process.env.CORS_ORIGIN || "*";
+const corsOrigins = corsOriginEnv.split(",").map(o => o.trim()).filter(Boolean);
+
+if (corsOriginEnv === "*" && process.env.NODE_ENV === "production") {
+  console.warn("⚠️  CORS_ORIGIN está como \"*\" em produção. Recomenda-se restringir à URL real do frontend.");
+}
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || "*",
+  origin: corsOrigins.includes("*") ? "*" : corsOrigins,
   methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 
@@ -70,6 +80,21 @@ app.use("/api/auth/login", rateLimit({
   legacyHeaders: false,
   message: { ok: false, erro: "Muitas tentativas de login. Aguarde um minuto." }
 }));
+
+// Rate limit dedicado para as duas rotas públicas que GRAVAM dados sem
+// exigir login (POST /api/contatos e POST /api/stats/view). O limite geral
+// de /api (120/min) é alto demais para essas: sem isso, alguém poderia
+// automatizar o envio de centenas de "contatos" falsos por minuto, poluindo
+// os dados reais de clientes e inchando os arquivos em disco.
+const limiteEscritaPublica = rateLimit({
+  windowMs: 60 * 1000,
+  max: 8,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { ok: false, erro: "Muitas requisições. Tente novamente em 1 minuto." }
+});
+app.use("/api/contatos", (req, res, next) => req.method === "POST" ? limiteEscritaPublica(req, res, next) : next());
+app.use("/api/stats/view", limiteEscritaPublica);
 
 /* ─── Arquivos estáticos ─── */
 // Painel admin
@@ -109,6 +134,18 @@ app.use((req, res) => {
     return res.sendFile(path.join(FRONTEND_PATH, "index.html"));
   }
   res.status(404).send("Frontend não disponível neste serviço. Esta instância serve apenas a API.");
+});
+
+/* ─── Handler global de erro ───
+   Qualquer erro não tratado (JSON malformado, exceção em rota, etc.) cai
+   aqui. Sem isso, o Express devolveria o stack trace completo do código
+   para o cliente em alguns casos — informação útil para quem está tentando
+   atacar o servidor (caminhos de arquivo, versões de biblioteca etc.).
+   O detalhe real do erro vai só para o log do servidor. */
+app.use((err, req, res, next) => {
+  console.error("[ERRO NÃO TRATADO]", err);
+  if (res.headersSent) return next(err);
+  res.status(500).json({ ok: false, erro: "Erro interno no servidor. Tente novamente em instantes." });
 });
 
 /* ─── Sobe o servidor (sem dependência de banco externo) ─── */

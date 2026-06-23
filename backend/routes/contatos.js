@@ -28,6 +28,7 @@ router.post("/", (req, res) => {
   }
 
   const contatos = lerContatos();
+  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "?";
   const novo = {
     id: contatos.length ? Math.max(...contatos.map(c => c.id)) + 1 : 1,
     nome: nome ? String(nome).trim().slice(0, 120) : "Não informado",
@@ -36,6 +37,7 @@ router.post("/", (req, res) => {
     sku: sku ? String(sku).trim().slice(0, 30) : null,
     mensagem: mensagem ? String(mensagem).trim().slice(0, 500) : null,
     origem: String(origem).trim().slice(0, 30),
+    ip,
     criado_em: new Date().toISOString()
   };
   contatos.unshift(novo);

@@ -21,9 +21,18 @@ router.post("/view", (req, res) => {
   const { sku } = req.body;
   if (!sku || typeof sku !== "string") return res.status(400).json({ ok: false });
 
+  const skuLimpo = sku.trim().slice(0, 30);
+  // SKU sempre segue o padrão usado em routes/produtos.js (letras, números,
+  // hífen, underline). Qualquer outra coisa é descartada silenciosamente —
+  // evita que essa rota pública seja usada para gravar texto arbitrário
+  // que depois seria exibido no painel admin.
+  if (!/^[A-Za-z0-9\-_]{1,30}$/.test(skuLimpo)) {
+    return res.status(400).json({ ok: false });
+  }
+
   const views = lerJSON(VIEWS_PATH);
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "?";
-  views.push({ sku: sku.trim().slice(0, 30), ip, criado_em: new Date().toISOString() });
+  views.push({ sku: skuLimpo, ip, criado_em: new Date().toISOString() });
   salvarJSON(VIEWS_PATH, views);
 
   res.json({ ok: true });

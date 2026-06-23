@@ -8,6 +8,13 @@ backend/node_modules/
 backend/.env
 backend/.env.local
 
+# Dados pessoais de clientes e logs de acesso — NUNCA versionar
+# (nome, telefone e mensagens de contato; IPs de visualização).
+# produtos.json continua versionado de propósito: é catálogo público,
+# sem dado pessoal.
+backend/data/contatos.json
+backend/data/visualizacoes.json
+
 # Logs
 *.log
 npm-debug.log*
