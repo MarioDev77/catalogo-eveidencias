@@ -691,6 +691,18 @@ function changeZoom(delta, clientX, clientY) {
 }
 
 /* =========================================
+   REVEAL ANIMATION (escopo global)
+   ========================================= */
+function ativarReveal() {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll(".reveal:not(.in)").forEach(el => io.observe(el));
+}
+
+/* =========================================
    BUSCA & FILTROS
    ========================================= */
 let activeFilter = 'all';
@@ -873,15 +885,6 @@ document.addEventListener("DOMContentLoaded", () => {
     {id:"novos-AT-N43", sku:"AT-N43", nome:"Cinto Tachas Preto",           descricao:"Cintos em couro preto com tachas metálicas em prata e dourado. Diferentes estilos de fivelas.",                       categoria:"novos", imagem:"images/novo_43.jpeg", tamanhos:["Único"], preco:"Consulte valores", ativo:true},
     {id:"novos-AT-N44", sku:"AT-N44", nome:"Cinto Tachas Colorido",        descricao:"Cinto com tachas em prata. Disponível em Marrom, Branco, Nude e Preto.",                                              categoria:"novos", imagem:"images/novo_44.jpeg", tamanhos:["Único"], preco:"Consulte valores", ativo:true}
   ];
-
-  function ativarReveal() {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.08 });
-    document.querySelectorAll(".reveal:not(.in)").forEach(el => io.observe(el));
-  }
 
   function carregarCatalogo() {
     allProducts = PRODUTOS_FALLBACK.filter(p => p.categoria !== "masculino");
