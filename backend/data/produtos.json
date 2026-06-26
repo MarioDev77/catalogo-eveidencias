@@ -539,5 +539,131 @@
     ],
     "preco": "Consulte",
     "ativo": true
+  },
+  {
+    "id": 36,
+    "nome": "Vestido Gola Alta Franzido",
+    "descricao": "Vestido mini com gola alta franzido na saia, estilo chic e elegante",
+    "preco": 0,
+    "categoria": "Vestidos",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "imagem": "images/novo_36.jpeg",
+    "destaque": false
+  },
+  {
+    "id": 37,
+    "nome": "Legging Couro Modeladora",
+    "descricao": "Legging de couro ecológico modeladora com gola alta. Disponível em vinho, preto e caramelo",
+    "preco": 0,
+    "categoria": "Calças",
+    "tamanhos": [
+      "P",
+      "M",
+      "G",
+      "GG"
+    ],
+    "imagem": "images/novo_37.jpeg",
+    "destaque": false
+  },
+  {
+    "id": 38,
+    "nome": "Vestido Preto Tule Decotado",
+    "descricao": "Vestido mini preto com tule no decote e saia franzida, elegância e sensualidade",
+    "preco": 0,
+    "categoria": "Vestidos",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "imagem": "images/novo_38.jpeg",
+    "destaque": false
+  },
+  {
+    "id": 39,
+    "nome": "Calça Couro Skinny",
+    "descricao": "Calça skinny de couro ecológico cintura alta. Disponível em preto e caramelo",
+    "preco": 0,
+    "categoria": "Calças",
+    "tamanhos": [
+      "34",
+      "36",
+      "38",
+      "40",
+      "42",
+      "44"
+    ],
+    "imagem": "images/novo_39.jpeg",
+    "destaque": false
+  },
+  {
+    "id": 40,
+    "nome": "Mini Vestido Cowl Neck",
+    "descricao": "Mini vestido com decote cowl neck franzido. Disponível em vinho, preto, marrom e off-white",
+    "preco": 0,
+    "categoria": "Vestidos",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "imagem": "images/novo_40.jpeg",
+    "destaque": false
+  },
+  {
+    "id": 41,
+    "nome": "Vestido Tomara Que Caia",
+    "descricao": "Vestido tomara que caia com fivela dourada. Disponível em amarelo, verde, branco, preto, laranja e rosa",
+    "preco": 0,
+    "categoria": "Vestidos",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "imagem": "images/novo_41.jpeg",
+    "destaque": false
+  },
+  {
+    "id": 42,
+    "nome": "Conjunto Cutout Medalha",
+    "descricao": "Conjunto manga longa com cutout e medalha dourada. Disponível em vermelho, preto e caramelo",
+    "preco": 0,
+    "categoria": "Conjuntos",
+    "tamanhos": [
+      "P",
+      "M",
+      "G"
+    ],
+    "imagem": "images/novo_42.jpeg",
+    "destaque": false
+  },
+  {
+    "id": 43,
+    "nome": "Cinto Tachas Preto",
+    "descricao": "Cintos com tachas em prata e dourado, diferentes estilos e fivelas",
+    "preco": 0,
+    "categoria": "Acessórios",
+    "tamanhos": [
+      "Único"
+    ],
+    "imagem": "images/novo_43.jpeg",
+    "destaque": false
+  },
+  {
+    "id": 44,
+    "nome": "Cinto Tachas Colorido",
+    "descricao": "Cinto com tachas em prata. Disponível em marrom, branco, nude e preto",
+    "preco": 0,
+    "categoria": "Acessórios",
+    "tamanhos": [
+      "Único"
+    ],
+    "imagem": "images/novo_44.jpeg",
+    "destaque": false
   }
 ]
